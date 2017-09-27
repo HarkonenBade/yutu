@@ -15,6 +15,16 @@ async def highfive(ctx):
     '''
     await ctx.send('{0.mention} :pray: {1.mention}'.format(ctx.me, ctx.author))
 
+@client.command()
+async def cute(ctx, member: discord.Member = None):
+    if member is None:
+        first = ctx.me
+        second = ctx.author
+    else:
+        first = ctx.author
+        second = member
+    await ctx.send('{0.mention} Thinks that {1.mention} is cute!'.format(first, second))
+
 if __name__ == "__main__":
     with open("cfg.json") as fh:
         token = json.load(fh)['token']
