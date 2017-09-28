@@ -9,14 +9,15 @@ class SoulPact:
     async def soulpact(self, ctx: commands.Context):
         pactee = discord.utils.find(lambda r: r.name == "pactee", ctx.guild.roles)
         post = discord.Embed()
-        post.set_thumbnail(url=ctx.me.avatar_url)
         if pactee in ctx.author.roles:
             post.description = "Oh **{0.display_name}**, you already sold your soul to me.\n*grins*".format(ctx.author)
+            post.set_thumbnail(url=ctx.me.avatar_url)
             await ctx.send(embed=post)
         else:
             post.description = ("Please **{0.display_name}**, give me your soul?\n"
                                 "You don't need it right?\n"
                                 "Please say yes!".format(ctx.author))
+            post.set_thumbnail(url=ctx.me.avatar_url)
             await ctx.send(embed=post)
 
             def check(message: discord.Message):
