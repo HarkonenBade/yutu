@@ -64,3 +64,18 @@ class Misc:
         post.set_image(url="https://i.imgur.com/RDdGYgK.gif")
         post.set_thumbnail(url=first.avatar_url)
         await ctx.send(embed=post)
+
+    @commands.command(aliases=['nibbles'])
+    async def nibble(self, ctx: commands.Context, user: discord.Member = None):
+        """
+        Nibble on someone
+        """
+        if user is None:
+            await ctx.send("{0.mention}: I'm sorry I don't know that person".format(ctx.author))
+
+        else:
+            post = discord.Embed(
+                description="**{0.display_name}** nibbles on **{1.display_name}**".format(ctx.author, user)
+            )
+            post.set_thumbnail(url=ctx.author.avatar_url)
+            await ctx.send(embed=post)
