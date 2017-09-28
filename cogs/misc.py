@@ -1,5 +1,10 @@
+from urllib.request import urlopen
+import io
+
 import discord
 from discord.ext import commands
+
+import memegenerator
 
 class Misc:
     @commands.command()
@@ -26,3 +31,22 @@ class Misc:
                                                                                                                  second))
         post.set_image(url="https://i.imgur.com/MuVAkV2.gif")
         await ctx.send(embed=post)
+
+    @commands.command(hidden=True)
+    async def soulpact(self, ctx):
+        post = discord.Embed()
+        post.description = "Please **{0.display_name}**, give me your soul?\nYou don't need it right?".format(ctx.author)
+        post.set_thumbnail(url=ctx.me.avatar_url)
+        await ctx.send(embed=post)
+
+    @commands.command()
+    async def meme(self, ctx, user: discord.Member, *args):
+        async with ctx.typing():
+            print(user.avatar_url_as(format="png"))
+            av = urlopen(user.avatar_url_as(format="png"))
+            img = io.BytesIO()
+            msg_text = " ".join(args)
+            top = msg_text.split("|")[0].strip()
+            bottom = msg_text.split("|")[1].strip()
+            memegenerator.make_meme(top, bottom, av, img)
+            await ctx.send(file=discord.File(img))
