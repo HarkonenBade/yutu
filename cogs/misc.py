@@ -47,7 +47,7 @@ class Misc:
         msg.set_thumbnail(url=ctx.me.avatar_url)
         await ctx.send(embed=msg)
 
-    @commands.command()
+    @commands.command(aliases=['hugs'])
     async def hug(self, ctx: commands.Context, user: discord.Member = None):
         """
         Give someone a hug
@@ -59,7 +59,8 @@ class Misc:
             first = ctx.author
             second = user
         post = discord.Embed(
-            description="**{0.display_name}** hugs **{1.display_name}**".format(first, second)
+            description="**{0.display_name}** gives **{1.display_name}** a warm hug".format(first, second)
         )
+        post.set_image(url="https://i.imgur.com/RDdGYgK.gif")
         post.set_thumbnail(url=first.avatar_url)
         await ctx.send(embed=post)
