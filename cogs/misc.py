@@ -46,3 +46,20 @@ class Misc:
                                                                                               rate/10.0)
         msg.set_thumbnail(url=ctx.me.avatar_url)
         await ctx.send(embed=msg)
+
+    @commands.command()
+    async def hug(self, ctx: commands.Context, user: discord.Member = None):
+        """
+        Give someone a hug
+        """
+        if user is None:
+            first = ctx.me
+            second = ctx.author
+        else:
+            first = ctx.author
+            second = user
+        post = discord.Embed(
+            description="**{0.display_name}** hugs **{1.display_name}**".format(first, second)
+        )
+        post.set_thumbnail(url=first.avatar_url)
+        await ctx.send(embed=post)
