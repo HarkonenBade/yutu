@@ -1,3 +1,4 @@
+import os
 import discord
 from discord.ext.commands import Bot, when_mentioned_or
 import json
@@ -12,6 +13,4 @@ async def on_ready():
 client.load_extension("cogs")
 
 if __name__ == "__main__":
-    with open("cfg.json") as fh:
-        token = json.load(fh)['token']
-    client.run(token)
+    client.run(os.environ['DISCORD_TOKEN'])
