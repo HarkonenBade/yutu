@@ -23,7 +23,7 @@ async def cute(ctx, member: discord.Member = None):
     else:
         first = ctx.author
         second = member
-    post = discord.Embed(description='**{0.name}** thinks that **{1.name}** is cute!'.format(first, second))
+    post = discord.Embed(description='**{0.display_name}** thinks that **{1.display_name}** is cute!'.format(first, second))
     post.set_image(url="https://i.imgur.com/MuVAkV2.gif")
     await ctx.send(embed=post)
 
