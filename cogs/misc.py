@@ -3,14 +3,14 @@ from discord.ext import commands
 
 class Misc:
     @commands.command()
-    async def highfive(self, ctx):
+    async def highfive(self, ctx: commands.Context):
         """
         Give Yutu a high-five
         """
         await ctx.send('{0.mention} :pray: {1.mention}'.format(ctx.me, ctx.author))
 
     @commands.command()
-    async def cute(self, ctx, user: discord.Member = None):
+    async def cute(self, ctx: commands.Context, user: discord.Member = None):
         """
         Tell someone they are cute!
 
