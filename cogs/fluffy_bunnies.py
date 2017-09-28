@@ -6,6 +6,19 @@ from discord.ext import commands
 
 class SoulPact:
     @commands.command(hidden=True)
+    async def souls(self, ctx: commands.Context):
+        pactee = discord.utils.find(lambda r: r.name == "pactee", ctx.guild.roles)
+        souls = sum(1 for m in ctx.guild.members if pactee in m.roles)
+        post = discord.Embed()
+        post.set_thumbnail(url=ctx.me.avatar_url)
+        if souls == 0:
+            post.description = "Souls? I don't have any.\nWould you give me yours?"
+        else:
+            post.description = "Souls? Oh I have at least {}.\nThough I'm always happy to accept new additions.".format(souls)
+
+        await ctx.send(embed=post)
+
+    @commands.command(hidden=True)
     async def soulpact(self, ctx: commands.Context):
         pactee = discord.utils.find(lambda r: r.name == "pactee", ctx.guild.roles)
         post = discord.Embed()
