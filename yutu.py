@@ -23,7 +23,9 @@ async def cute(ctx, member: discord.Member = None):
     else:
         first = ctx.author
         second = member
-    await ctx.send('{0.mention} Thinks that {1.mention} is cute!'.format(first, second))
+    post = discord.Embed(description='**{0.name}** thinks that **{1.name}** is cute!'.format(first, second))
+    post.set_image(url="https://i.imgur.com/MuVAkV2.gif")
+    await ctx.send(embed=post)
 
 if __name__ == "__main__":
     with open("cfg.json") as fh:
