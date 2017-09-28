@@ -1,9 +1,17 @@
 import os
 import discord
 from discord.ext.commands import Bot, when_mentioned_or
-import json
 
-client = Bot(when_mentioned_or("~"), game=discord.Game(name="~help"))
+DESCRIPTION = """
+Hi, I'm Yutu!
+I'm the bot for the Velvet fan discord.
+I'm still learning so sorry if I do something wrong.
+You can ask my programmer @Harkonen if you want to know more about me.
+"""
+
+client = Bot(when_mentioned_or("~"),
+             game=discord.Game(name="~help"),
+             description=DESCRIPTION)
 
 
 @client.event
