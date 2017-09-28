@@ -9,7 +9,7 @@ from discord.ext import commands
 
 class Meme:
     @commands.command()
-    async def meme(self, ctx, user: discord.Member, *args):
+    async def meme(self, ctx: commands.Context, user: discord.Member, *, args):
         """
         Create a meme from a users avatar
         
@@ -18,9 +18,10 @@ class Meme:
         async with ctx.typing():
             tmp = io.BytesIO(requests.get(user.avatar_url_as(format="png")).content)
             tmp2 = io.BytesIO()
-            msg_text = " ".join(args).upper()
-            top = msg_text.split("|")[0].strip()
-            bottom = msg_text.split("|")[1].strip()
+            msg_text = await commands.clean_content().convert(ctx, args)
+            captions = msg_text.upper().split("|")
+            top = captions[0].strip()
+            bottom = captions[1].strip()
             _generate(top, bottom, tmp, 1024, 1024).save(tmp2, format="png")
             tmp2.seek(0)
             await ctx.send(file=discord.File(tmp2, filename="meme.png"))
