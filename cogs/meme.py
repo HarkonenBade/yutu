@@ -51,7 +51,7 @@ IN THE SOFTWARE.
 
 
 def _generate(top, bottom, background, width, height):
-    font_path = "./TitilliumWeb-Black.ttf"
+    font_path = "./data/impact.ttf"
     """Add text to an image and save it."""
     background_image = ImageFile.open(background)
     if background_image.mode not in ('RGB', 'RGBA'):
