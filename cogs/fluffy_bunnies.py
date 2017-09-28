@@ -11,7 +11,7 @@ class SoulPact:
         post = discord.Embed()
         post.set_thumbnail(url=ctx.me.avatar_url)
         if pactee in ctx.author.roles:
-            post.description = "Oh **{0.display_name}**, you already sold your soul to me.\n*grins*"
+            post.description = "Oh **{0.display_name}**, you already sold your soul to me.\n*grins*".format(ctx.author)
             await ctx.send(embed=post)
         else:
             post.description = ("Please **{0.display_name}**, give me your soul?\n"
