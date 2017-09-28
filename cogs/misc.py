@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+
 class Misc:
     @commands.command()
     async def highfive(self, ctx: commands.Context):
@@ -14,7 +15,8 @@ class Misc:
         """
         Tell someone they are cute!
 
-        Tells a user that you think they are cute, if you don't give a user, then Yutu will let you know that you are cute.
+        Tells a user that you think they are cute, if you don't give a user,
+        then Yutu will let you know that you are cute.
         """
         if user is None:
             first = ctx.me
@@ -22,7 +24,7 @@ class Misc:
         else:
             first = ctx.author
             second = user
-        post = discord.Embed(description='**{0.display_name}** thinks that **{1.display_name}** is cute!'.format(first,
-                                                                                                                 second))
+        post = discord.Embed(
+            description='**{0.display_name}** thinks that **{1.display_name}** is cute!'.format(first, second))
         post.set_image(url="https://i.imgur.com/MuVAkV2.gif")
         await ctx.send(embed=post)
