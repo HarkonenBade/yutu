@@ -1,9 +1,8 @@
 import discord
-from discord.ext.commands import Bot
+from discord.ext.commands import Bot, when_mentioned_or
 import json
 
-client = Bot("~", game=discord.Game(name="~help"))
-
+client = Bot(when_mentioned_or("~"), game=discord.Game(name="~help"))
 
 @client.event
 async def on_ready():
