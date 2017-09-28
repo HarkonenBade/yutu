@@ -26,3 +26,10 @@ class Misc:
                                                                                                                  second))
         post.set_image(url="https://i.imgur.com/MuVAkV2.gif")
         await ctx.send(embed=post)
+
+    @commands.command(hidden=True)
+    async def soulpact(self, ctx: commands.Context):
+        post = discord.Embed()
+        post.description = "Please **{0.display_name}**, give me your soul?\nYou don't need it right?".format(ctx.author)
+        post.set_thumbnail(url=ctx.me.avatar_url)
+        await ctx.send(embed=post)
