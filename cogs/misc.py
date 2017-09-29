@@ -1,4 +1,5 @@
 import hashlib
+import random
 
 import discord
 from discord.ext import commands
@@ -11,25 +12,6 @@ class Misc:
         Give Yutu a high-five
         """
         await ctx.send('{0.mention} :pray: {1.mention}'.format(ctx.me, ctx.author))
-
-    @commands.command()
-    async def cute(self, ctx: commands.Context, user: discord.Member = None):
-        """
-        Tell someone they are cute!
-
-        Tells a user that you think they are cute, if you don't give a user,
-        then Yutu will let you know that you are cute.
-        """
-        if user is None:
-            first = ctx.me
-            second = ctx.author
-        else:
-            first = ctx.author
-            second = user
-        post = discord.Embed(
-            description='**{0.display_name}** thinks that **{1.display_name}** is cute!'.format(first, second))
-        post.set_image(url="https://i.imgur.com/MuVAkV2.gif")
-        await ctx.send(embed=post)
 
     @commands.command()
     async def rate(self, ctx: commands.Context, *args):
@@ -47,35 +29,49 @@ class Misc:
         msg.set_thumbnail(url=ctx.me.avatar_url)
         await ctx.send(embed=msg)
 
-    @commands.command(aliases=['hugs'])
-    async def hug(self, ctx: commands.Context, user: discord.Member = None):
-        """
-        Give someone a hug
-        """
-        if user is None:
-            first = ctx.me
-            second = ctx.author
+def interact_fwrk(name, text, help, aliases=[], images=None, disallow_none=False):
+    @commands.command(name=name, aliases=aliases)
+    async def cmd(self, ctx: commands.Context, user: discord.Member = None):
+        if disallow_none:
+            if user is None:
+                await ctx.send("{0.mention}: I'm sorry I don't know that person".format(ctx.author))
+                return
+            else:
+                first = ctx.author
+                second = user
         else:
-            first = ctx.author
-            second = user
-        post = discord.Embed(
-            description="**{0.display_name}** gives **{1.display_name}** a warm hug".format(first, second)
-        )
-        post.set_image(url="https://i.imgur.com/RDdGYgK.gif")
+            if user is None:
+                first = ctx.me
+                second = ctx.author
+            else:
+                first = ctx.author
+                second = user
+        post = discord.Embed()
+        if isinstance(text, list):
+            post.description = random.choice(text).format(first, second)
+        else:
+            post.description = text.format(first, second)
+        if images is not None:
+            post.set_image(url=random.choice(images))
         post.set_thumbnail(url=first.avatar_url)
         await ctx.send(embed=post)
+    cmd.__doc__ = help
+    setattr(Misc, name, cmd)
 
-    @commands.command(aliases=['nibbles'])
-    async def nibble(self, ctx: commands.Context, user: discord.Member = None):
-        """
-        Nibble on someone
-        """
-        if user is None:
-            await ctx.send("{0.mention}: I'm sorry I don't know that person".format(ctx.author))
+interact_fwrk(name='cute',
+              text='**{0.display_name}** thinks that **{1.display_name}** is cute!',
+              help="Tell someone they are cute!",
+              images=['https://i.imgur.com/MuVAkV2.gif'])
 
-        else:
-            post = discord.Embed(
-                description="**{0.display_name}** nibbles on **{1.display_name}**".format(ctx.author, user)
-            )
-            post.set_thumbnail(url=ctx.author.avatar_url)
-            await ctx.send(embed=post)
+interact_fwrk(name='hug',
+              text='**{0.display_name}** gives **{1.display_name}** a warm hug',
+              help="Give someone a hug",
+              aliases=['hugs'],
+              images=['https://i.imgur.com/RDdGYgK.gif'])
+
+interact_fwrk(name='nibble',
+              text='**{0.display_name}** nibbles on **{1.display_name}**',
+              help='Nibble on someone',
+              aliases=['nibbles'],
+              disallow_none=True)
+
