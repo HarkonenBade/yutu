@@ -6,6 +6,18 @@ from discord.ext import commands
 
 class SoulPact:
     @commands.command(hidden=True)
+    @commands.has_permissions(kick_members=True)
+    async def slay(self, ctx: commands.Context, user: discord.Member):
+        if user is None:
+            await ctx.send("{0.mention}: I'm sorry I don't know that person".format(ctx.author))
+        else:
+            post = discord.Embed(description="**{0.display_name}**, you have lost your soul privileges.\n"
+                                 "I withdraw from you the light of the most benevolent bun.".format(user))
+            post.set_thumbnail(url="https://i.imgur.com/1GCqgcR.png")
+            await ctx.send(embed=post)
+            await ctx.guild.kick(user)
+
+    @commands.command(hidden=True)
     async def souls(self, ctx: commands.Context):
         pactee = discord.utils.find(lambda r: r.name == "pactee", ctx.guild.roles)
         souls = sum(1 for m in ctx.guild.members if pactee in m.roles)
