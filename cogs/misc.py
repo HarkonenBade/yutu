@@ -75,3 +75,22 @@ interact_fwrk(name='nibble',
               aliases=['nibbles'],
               disallow_none=True)
 
+interact_fwrk(name='pat',
+              text='**{0.display_name}** pats **{1.display_name}** gently',
+              help='Pat someone')
+
+interact_fwrk(name='cuddle',
+              text='**{0.display_name}** cuddles around **{1.display_name}**',
+              help='Give someone a cuddle')
+
+interact_fwrk(name='noogie',
+              text='**{0.display_name}** gives **{1.display_name}** a noogie',
+              help='Give someone a noogie',
+              images=['https://imgur.com/a/uBOvN'],
+              disallow_none=True)
+
+interact_fwrk(name='siton',
+              text='**{0.display_name}** sits down on-top of **{1.display_name}**',
+              help='Sit on someone',
+              aliases=['sit-on'],
+              disallow_none=True)
