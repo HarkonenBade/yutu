@@ -35,3 +35,7 @@ class Jukebox:
             else:
                 post.description = "**{0.display_name}**, I don't understand that.".format(ctx.author)
         await ctx.send(embed=post)
+
+    @commands.command()
+    async def play(self, ctx: commands.Context, url: str):
+        pass
