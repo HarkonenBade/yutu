@@ -13,6 +13,7 @@ class Facts:
             text = orm.Required(str)
             author = orm.Required(str)
         self.Fact = Fact
+        self.last_fact = 0
 
     @commands.group(name="fact")
     async def root(self, ctx: commands.Context):
@@ -23,6 +24,9 @@ class Facts:
                     if len(f) == 0:
                         await ctx.send(content="We don't have any velvet facts :(")
                     else:
+                        while f[0].id == self.last_fact:
+                            f = self.Fact.select_random(1)
+                        self.last_fact = f[0].id
                         await ctx.send(content="'{}' ~{}".format(f[0].text, f[0].author))
 
     @root.command()
