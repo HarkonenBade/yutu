@@ -3,6 +3,8 @@ import asyncio
 import discord
 from discord.ext import commands
 
+REDEYE_BUN = "https://i.imgur.com/1GCqgcR.png"
+
 
 class SoulPact:
     @commands.command(hidden=True)
@@ -13,7 +15,7 @@ class SoulPact:
         else:
             post = discord.Embed(description="**{0.display_name}**, you have lost your soul privileges.\n"
                                  "I withdraw from you the light of the most benevolent bun.".format(user))
-            post.set_thumbnail(url="https://i.imgur.com/1GCqgcR.png")
+            post.set_thumbnail(url=REDEYE_BUN)
             await ctx.send(embed=post)
             await ctx.guild.kick(user)
 
@@ -22,11 +24,18 @@ class SoulPact:
         pactee = discord.utils.find(lambda r: r.name == "pactee", ctx.guild.roles)
         souls = sum(1 for m in ctx.guild.members if pactee in m.roles)
         post = discord.Embed()
-        post.set_thumbnail(url=ctx.me.avatar_url)
         if souls == 0:
-            post.description = "Souls? I don't have any.\nWould you give me yours?"
+            post.description = ("Souls? I don't have any.\n"
+                                "Would you give me yours?")
+            post.set_thumbnail(url=ctx.me.avatar_url)
+        elif souls < 10:
+            post.description = ("Souls? Oh I have at least {}.\n"
+                                "Though I'm always happy to accept new additions.").format(souls)
+            post.set_thumbnail(url=ctx.me.avatar_url)
         else:
-            post.description = "Souls? Oh I have at least {}.\nThough I'm always happy to accept new additions.".format(souls)
+            post.description = ("I think I have at least {}.\n"
+                                "The power is really quite *intoxicating*.").format(souls)
+            post.set_thumbnail(url=REDEYE_BUN)
 
         await ctx.send(embed=post)
 
@@ -59,5 +68,5 @@ class SoulPact:
                 await ctx.author.add_roles(pactee, reason="Soul Pact")
                 rsp = discord.Embed()
                 rsp.description = "*The pact is complete*"
-                rsp.set_thumbnail(url="https://i.imgur.com/1GCqgcR.png")
+                rsp.set_thumbnail(url=REDEYE_BUN)
                 await ctx.send(embed=rsp)
