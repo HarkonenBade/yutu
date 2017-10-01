@@ -29,6 +29,41 @@ class Misc:
         await ctx.send(embed=msg)
 
     @commands.command()
+    async def numerology(self, ctx: commands.Context, *args):
+        """
+        Ask Yutu to do a numerology calculation on something
+        """
+        subject = await commands.clean_content().convert(ctx, " ".join(args))
+        post = "```\nCalculating numerological result for \"{}\"\n\n".format(subject)
+        chars = [c.upper() for c in subject if c.isalpha()]
+        post += " + ".join(chars)
+        post += "\n\n"
+        vals = [((ord(c)-65) % 9) + 1 for c in chars]
+        post += " + ".join([str(i) for i in vals])
+        s = sum(vals)
+        post += " = {}\n\n".format(s)
+        while s > 9 and (s > 40 or s % 11 != 0):
+            digits = [int(c) for c in str(s)]
+            post += " + ".join([str(i) for i in digits])
+            s = sum(digits)
+            post += " = {}\n\n".format(s)
+        post += "\n"
+        post += {1: "1 – Initiator action, pioneering, leading, independent, attaining, individualistic",
+                 2: "2 – Cooperation, adaptability, consideration of others, partnering, mediating",
+                 3: "3 – Expression, verbalization, socialization, the arts, the joy of living",
+                 4: "4 – Values foundation, order, service, struggle against limits, steady growth",
+                 5: "5 – Expansiveness, visionary, adventure, the constructive use of freedom",
+                 6: "6 – Responsibility, protection, nurturing, community, balance, sympathy",
+                 7: "7 – Analysis, understanding, knowledge, awareness, studious, meditating",
+                 8: "8 – Practical endeavors, status oriented, power-seeking, high-material goals",
+                 9: "9 – Humanitarian, giving nature, selflessness, obligations, creative expression",
+                 11: "11 – Higher spiritual plane, intuitive, illumination, idealist, a dreamer",
+                 22: "22 – The Master Builder, large endeavors, powerful force, leadership",
+                 33: "33 - The Master Teacher, humanitarian, usually only found in Big Names"}[s]
+        post += "```"
+        await ctx.send(content=post)
+
+    @commands.command()
     async def commend(self, ctx: commands.Context, user: discord.Member, *args):
         """
         Commend a user, with optional reason
