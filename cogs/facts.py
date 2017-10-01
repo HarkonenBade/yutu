@@ -28,7 +28,7 @@ class Facts:
                         while f[0].id == self.last_fact:
                             f = self.Fact.select_random(1)
                         self.last_fact = f[0].id
-                        author = commands.MemberConverter().convert(f[0].author)
+                        author = await commands.MemberConverter().convert(f[0].author)
                         await ctx.send(embed=discord.Embed(description="'{}'".format(f[0].text))
                                                     .set_author(name=author.display_name))
 
