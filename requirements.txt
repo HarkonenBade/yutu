@@ -3,3 +3,5 @@ Pillow
 requests
 pynacl
 youtube_dl
+pony
+psycopg2
