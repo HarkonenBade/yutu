@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 
 from pony import orm
@@ -27,7 +28,8 @@ class Facts:
                         while f[0].id == self.last_fact:
                             f = self.Fact.select_random(1)
                         self.last_fact = f[0].id
-                        await ctx.send(content="'{}' ~{}".format(f[0].text, f[0].author))
+                        await ctx.send(content=discord.Embed(description="'{}'".format(f[0].text))
+                                                      .set_author(name=f[0].author))
 
     @root.command()
     async def add(self, ctx: commands.Context, *args):
