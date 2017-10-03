@@ -82,7 +82,7 @@ class Misc:
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def clap(selfself, ctx: commands.Context, *args):
+    async def clap(self, ctx: commands.Context, *args):
         """
         :clap: your :clap: message :clap: here :clap:
         """
