@@ -8,7 +8,7 @@ class Jukebox:
     def __init__(self):
         self.vc = None
         self.ytdl = youtube_dl.YoutubeDL({'format': 'bestaudio/best',
-                                          'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
+                                          'outtmpl': 'cache/%(id)s.%(ext)s',
                                           'restrictfilenames': True,
                                           'quiet': True,
                                           'no_warnings': True,
@@ -63,12 +63,15 @@ class Jukebox:
         post = discord.Embed()
         post.set_thumbnail(url=ctx.me.avatar_url)
         if self.vc is not None:
-            info = await self.extract_info(ctx.bot.loop, url, download=False)
-            self.vc.play(discord.FFmpegPCMAudio(info['url']))
+            post.description = "**{0.display_name}**, loading...".format(ctx.author)
+            msg = await ctx.send(embed=post)
+            info = await self.extract_info(ctx.bot.loop, url, download=True)
+            self.vc.play(discord.FFmpegPCMAudio(self.ytdl.prepare_filename(info)))
             post.description = "**{0.display_name}**, playing **{1}**".format(ctx.author, info['title'])
+            await msg.edit(embed=post)
         else:
             post.description = "**{0.display_name}**, I'm not currently in voice.".format(ctx.author)
-        await ctx.send(embed=post)
+            await ctx.send(embed=post)
 
     @jukebox.command()
     async def stop(self, ctx: commands.Context):
