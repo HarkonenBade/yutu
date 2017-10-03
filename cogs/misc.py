@@ -80,3 +80,11 @@ class Misc:
                                  "**{0.display_name}** commends **{1.display_name}**"
                                  " :military_medal::trophy:").format(ctx.author, user)
         await ctx.send(embed=embed)
+
+    @commands.command()
+    async def clap(selfself, ctx: commands.Context, *args):
+        """
+        :clap: your :clap: message :clap: here :clap:
+        """
+        msg = await commands.clean_content().convert(ctx, " ".join(args))
+        await ctx.send(content=":clap: " + " :clap: ".join(msg.split(" ")) + " :clap:")
