@@ -16,3 +16,11 @@ class Manage:
         post.set_thumbnail(url=ctx.me.avatar_url)
         await ctx.send(embed=post)
         ctx.bot.loop.stop()
+
+    @commands.command()
+    async def request(self, ctx: commands.Context, *args):
+        """
+        Requests a feature from the author, do not abuse
+        """
+        msg = "Request from {}:\n".format(ctx.author.mention) + " ".join(args)
+        await ctx.bot.get_user(ctx.bot.owner_id).send(content=msg)
