@@ -88,3 +88,15 @@ class Misc:
         """
         msg = await commands.clean_content().convert(ctx, " ".join(args))
         await ctx.send(content=":clap: " + " :clap: ".join(msg.split(" ")) + " :clap:")
+
+    @commands.command()
+    async def vote(self, ctx: commands.Context, *args):
+        """
+        Start a vote on something.
+        """
+        msg = await commands.clean_content().convert(ctx, " ".join(args))
+        post = await ctx.send(content=":inbox_tray: A vote has been started by **{0.display_name}**".format(ctx.author),
+                              embed=discord.Embed(title=msg))
+        await post.add_reaction("👍")
+        await post.add_reaction("🤷")
+        await post.add_reaction("👎")
