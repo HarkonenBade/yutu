@@ -4,7 +4,7 @@ from discord.ext import commands
 
 def can_manage():
     def pred(ctx: commands.Context):
-        return ctx.author.id == 114120546836283394
+        return ctx.bot.is_owner(ctx.author)
     return commands.check(pred)
 
 class Manage:

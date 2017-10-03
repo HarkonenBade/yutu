@@ -19,6 +19,7 @@ client = Bot(when_mentioned_or("~"),
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    client.owner_id = (await client.application_info()).owner.id
 
 client.db = orm.Database()
 
@@ -28,5 +29,4 @@ client.db.bind(provider='postgres', user='yutu', database='yutu', host='localhos
 #client.db.bind(provider='sqlite', filename=':memory:')
 client.db.generate_mapping(create_tables=True)
 
-if __name__ == "__main__":
-    client.run(os.environ['DISCORD_TOKEN'])
+client.run(os.environ['DISCORD_TOKEN'])
