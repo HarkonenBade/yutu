@@ -66,7 +66,7 @@ class Jukebox:
             post.description = "**{0.display_name}**, loading...".format(ctx.author)
             msg = await ctx.send(embed=post)
             info = await self.extract_info(ctx.bot.loop, url, download=True)
-            self.vc.play(discord.FFmpegPCMAudio(self.ytdl.prepare_filename(info)))
+            self.vc.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(self.ytdl.prepare_filename(info))))
             post.description = "**{0.display_name}**, playing **{1}**".format(ctx.author, info['title'])
             await msg.edit(embed=post)
         else:
@@ -83,3 +83,10 @@ class Jukebox:
         else:
             post.description = "**{0.display_name}**, I'm not currently in voice.".format(ctx.author)
         await ctx.send(embed=post)
+
+    @jukebox.command()
+    async def volume(self, ctx: commands.Context, vol: int):
+        if self.vc.source is not None:
+            vol = max(0, min(100, vol))
+            self.vc.source.volume = vol/100.0
+
