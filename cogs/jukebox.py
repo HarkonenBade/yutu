@@ -11,7 +11,8 @@ QueueEntry = collections.namedtuple("QueueEntry", ['fname', 'title', 'added_by']
 class Jukebox:
     def __init__(self):
         self.vc = None
-        self._queue = []
+        self.vol = 100
+        self.play_queue = []
         self.ytdl = youtube_dl.YoutubeDL({'format': 'bestaudio/best',
                                           'outtmpl': 'cache/%(id)s.%(ext)s',
                                           'restrictfilenames': True,
@@ -23,16 +24,19 @@ class Jukebox:
     async def extract_info(self, loop, *args, **kwargs):
         return await loop.run_in_executor(None, lambda: self.ytdl.extract_info(*args, **kwargs))
 
-    async def next(self, loop):
-        if self._queue:
-            self.play(loop, self._queue.pop(0).fname)
+    def next(self, loop):
+        if self.play_queue:
+            self._play(loop, self.play_queue.pop(0).fname)
 
-    def play(self, loop: asyncio.BaseEventLoop, name):
-        self.vc.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(name)),
-                     after=lambda err: loop.call_soon(self.next, loop))
+    def _play(self, loop: asyncio.BaseEventLoop, name):
+        self.vc.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(name), volume=self.vol/100.0),
+                     after=lambda err: self.next(loop))
 
     @commands.group()
     async def jukebox(self, ctx: commands.Context):
+        """
+        Commands for playing music in voice-chat
+        """
         if ctx.invoked_subcommand is None:
             if ctx.subcommand_passed is None:
                 await ctx.send(content="I don't understand that. "
@@ -40,6 +44,9 @@ class Jukebox:
 
     @jukebox.command(aliases=['yes', 'activate'])
     async def on(self, ctx: commands.Context):
+        """
+        Make Yutu join voice 
+        """
         if self.vc is None:
             self.vc = await ctx.guild.voice_channels[0].connect()
             await ctx.send(content="Ok, I'll join voice.")
@@ -48,6 +55,9 @@ class Jukebox:
 
     @jukebox.command(aliases=['no', 'deactivate'])
     async def off(self, ctx: commands.Context):
+        """
+        Make Yutu leave voice
+        """
         if self.vc is None:
             await ctx.send(content="I'm not in voice chat.")
         else:
@@ -57,10 +67,13 @@ class Jukebox:
 
     @jukebox.command()
     async def play(self, ctx: commands.Context, url: str = None):
+        """
+        Start the queue playing, or play a single song by url
+        """
         if self.vc is not None:
             if url is None:
-                if self.queue:
-                    await self.next()
+                if self.play_queue:
+                    self.next(ctx.bot.loop)
                 else:
                     await ctx.send(content="You need to give a url to play, or have something queued.")
             else:
@@ -69,7 +82,7 @@ class Jukebox:
                 post.description = "**{0}**, loading...".format(ctx.author)
                 msg = await ctx.send(embed=post)
                 info = await self.extract_info(ctx.bot.loop, url, download=True)
-                self.play(ctx.bot.loop, self.ytdl.prepare_filename(info))
+                self._play(ctx.bot.loop, self.ytdl.prepare_filename(info))
                 post.description = "**{0}**, playing **{1}**".format(ctx.author, info['title'])
                 await msg.edit(embed=post)
         else:
@@ -77,6 +90,9 @@ class Jukebox:
 
     @jukebox.command()
     async def stop(self, ctx: commands.Context):
+        """
+        Ends the currently playing song
+        """
         if self.vc is not None:
             self.vc.stop()
             await ctx.send(content="Stopping")
@@ -85,13 +101,25 @@ class Jukebox:
 
     @jukebox.command()
     async def volume(self, ctx: commands.Context, vol: int = None):
-        if self.vc.source is not None:
-            if vol is not None:
-                vol = max(0, min(100, vol))
+        """
+        Set the playback volume between 0-100
+        """
+        if vol is not None:
+            vol = max(0, min(100, vol))
+            self.vol = vol
+            if self.vc.source is not None:
                 self.vc.source.volume = vol/100.0
+            await ctx.send(content="Setting volume to {}%".format(vol))
+        else:
+            await ctx.send(content="Volume set to {}%".format(self.vol))
 
     @jukebox.group(usage=" ", invoke_without_command=True)
     async def queue(self, ctx: commands.Context):
+        """
+        Manipulate the play queue
+        
+        If executed with no subcommand it is the same as ~jukebox queue list
+        """
         if ctx.invoked_subcommand is None:
             if ctx.subcommand_passed == "queue":
                 print("attempting to list")
@@ -102,23 +130,37 @@ class Jukebox:
 
     @queue.command()
     async def add(self, ctx: commands.Context, url: str):
+        """
+        Add a song to the play queue by url 
+        """
         post = discord.Embed()
         post.set_thumbnail(url=ctx.me.avatar_url)
         post.description = "**{0}**, loading...".format(ctx.author)
         msg = await ctx.send(embed=post)
         info = await self.extract_info(ctx.bot.loop, url, download=True)
-        self._queue.append(QueueEntry(fname=self.ytdl.prepare_filename(info),
-                                      title=info['title'],
-                                      added_by=ctx.author))
+        self.play_queue.append(QueueEntry(fname=self.ytdl.prepare_filename(info),
+                                          title=info['title'],
+                                          added_by=ctx.author))
         post.description = "**{0}**, added **{1}** to the queue in place #{2}".format(ctx.author,
                                                                                       info['title'],
-                                                                                      len(self.queue))
+                                                                                      len(self.play_queue))
         await msg.edit(embed=post)
 
     @queue.command()
     async def list(self, ctx: commands.Context):
-        if self._queue:
-            await ctx.send(content="```{}```".format("\n".join(["{}: {} - {}".format(i, q.title, q.added_by)
-                                                                for i, q in enumerate(self._queue)])))
+        """
+        List the songs in the play queue
+        """
+        if self.play_queue:
+            await ctx.send(content="```{}```".format("\n".join(["{}: {} - {}".format(i + 1, q.title, q.added_by)
+                                                                for i, q in enumerate(self.play_queue)])))
         else:
             await ctx.send(content="Queue is currently empty.")
+
+    @queue.command()
+    async def clear(self, ctx: commands.Context):
+        """
+        Empty the play queue
+        """
+        self.play_queue.clear()
+        await ctx.send(content="Clearing play queue")

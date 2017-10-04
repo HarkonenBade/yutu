@@ -1,5 +1,6 @@
 import os
 
+from . import extensions
 from .bot import Yutu
 
 def main():
