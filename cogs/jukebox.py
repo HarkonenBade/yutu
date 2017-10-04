@@ -1,14 +1,17 @@
 import asyncio
+import collections
 
 import discord
 from discord.ext import commands
 
 import youtube_dl
 
+QueueEntry = collections.namedtuple("QueueEntry", ['fname', 'title', 'added_by'])
 
 class Jukebox:
     def __init__(self):
         self.vc = None
+        self._queue = []
         self.ytdl = youtube_dl.YoutubeDL({'format': 'bestaudio/best',
                                           'outtmpl': 'cache/%(id)s.%(ext)s',
                                           'restrictfilenames': True,
@@ -20,12 +23,13 @@ class Jukebox:
     async def extract_info(self, loop, *args, **kwargs):
         return await loop.run_in_executor(None, lambda: self.ytdl.extract_info(*args, **kwargs))
 
-    async def next(self):
-        pass
+    async def next(self, loop):
+        if self._queue:
+            self.play(loop, self._queue.pop(0).fname)
 
     def play(self, loop: asyncio.BaseEventLoop, name):
         self.vc.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(name)),
-                     after=lambda err: loop.call_soon(self.next))
+                     after=lambda err: loop.call_soon(self.next, loop))
 
     @commands.group()
     async def jukebox(self, ctx: commands.Context):
@@ -86,3 +90,35 @@ class Jukebox:
                 vol = max(0, min(100, vol))
                 self.vc.source.volume = vol/100.0
 
+    @jukebox.group(usage=" ", invoke_without_command=True)
+    async def queue(self, ctx: commands.Context):
+        if ctx.invoked_subcommand is None:
+            if ctx.subcommand_passed == "queue":
+                print("attempting to list")
+                await ctx.invoke(self.list)
+            else:
+                await ctx.send(content="I don't understand that. "
+                                       "Use `~help jukebox queue` to find out how to use this command.")
+
+    @queue.command()
+    async def add(self, ctx: commands.Context, url: str):
+        post = discord.Embed()
+        post.set_thumbnail(url=ctx.me.avatar_url)
+        post.description = "**{0}**, loading...".format(ctx.author)
+        msg = await ctx.send(embed=post)
+        info = await self.extract_info(ctx.bot.loop, url, download=True)
+        self._queue.append(QueueEntry(fname=self.ytdl.prepare_filename(info),
+                                      title=info['title'],
+                                      added_by=ctx.author))
+        post.description = "**{0}**, added **{1}** to the queue in place #{2}".format(ctx.author,
+                                                                                      info['title'],
+                                                                                      len(self.queue))
+        await msg.edit(embed=post)
+
+    @queue.command()
+    async def list(self, ctx: commands.Context):
+        if self._queue:
+            await ctx.send(content="```{}```".format("\n".join(["{}: {} - {}".format(i, q.title, q.added_by)
+                                                                for i, q in enumerate(self._queue)])))
+        else:
+            await ctx.send(content="Queue is currently empty.")
