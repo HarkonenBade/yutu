@@ -21,12 +21,9 @@ class Misc:
         hasher = hashlib.sha256()
         hasher.update(sample.lower().encode("UTF-8"))
         rate = int(hasher.hexdigest(), 16) % 1001
-        msg = discord.Embed()
-        msg.description = "**{0.display_name}** gives **{1}** a rating of **{2}/100**".format(ctx.me,
-                                                                                              sample,
-                                                                                              rate/10.0)
-        msg.set_thumbnail(url=ctx.me.avatar_url)
-        await ctx.send(embed=msg)
+        await ctx.e_say("**{me}** gives **{item}** a rating of **{rate}/100**",
+                        item=sample,
+                        rate=rate/10.0)
 
     @commands.command()
     async def numerology(self, ctx: commands.Context, *args):

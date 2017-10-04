@@ -1,6 +1,7 @@
 import os
 import discord
 from discord.ext.commands import Bot, when_mentioned_or
+import extensions
 
 from pony import orm
 
