@@ -22,9 +22,13 @@ class Meme:
             captions = msg_text.upper().split("|")
             top = captions[0].strip()
             bottom = captions[1].strip()
-            _generate(top, bottom, tmp, 1024, 1024).save(tmp2, format="png")
+            (await _agen(ctx.bot.loop, top, bottom, tmp, tmp2, 1024, 1024))
             tmp2.seek(0)
             await ctx.send(file=discord.File(tmp2, filename="meme.png"))
+
+
+async def _agen(loop, *args, **kwargs):
+    return await loop.run_in_executor(None, lambda: _generate(*args, **kwargs))
 
 """
 The following licence applies to all code in this file below this point.
@@ -51,7 +55,7 @@ IN THE SOFTWARE.
 """
 
 
-def _generate(top, bottom, background, width, height):
+def _generate(top, bottom, background, output, width, height):
     font_path = "./data/impact.ttf"
     """Add text to an image and save it."""
     background_image = ImageFile.open(background)
@@ -119,7 +123,7 @@ def _generate(top, bottom, background, width, height):
     if width and height:
         image = _add_blurred_background(image, background_image, width, height)
 
-    return image
+    image.save(output, format="png")
 
 
 def _optimize_font_size(font, text, max_font_size, min_font_size,
