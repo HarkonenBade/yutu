@@ -4,6 +4,11 @@ import discord
 from discord.ext import commands
 
 
+class DummyArg:
+    def __init__(self, name):
+        self.name = name
+
+
 class Interact:
     pass
 
@@ -13,8 +18,7 @@ def interact_fwrk(name, text, help, aliases=[], images=None, disallow_none=False
     async def cmd(self, ctx: commands.Context, user: discord.Member = None):
         if disallow_none:
             if user is None:
-                await ctx.send("{0.mention}: I'm sorry I don't know that person".format(ctx.author))
-                return
+                raise commands.errors.MissingRequiredArgument(DummyArg('user'))
             else:
                 first = ctx.author
                 second = user

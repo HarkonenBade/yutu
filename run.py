@@ -1,0 +1,3 @@
+import yutu
+
+yutu.main()
