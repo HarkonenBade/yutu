@@ -31,55 +31,53 @@ class Jukebox:
     async def jukebox(self, ctx: commands.Context):
         if ctx.invoked_subcommand is None:
             if ctx.subcommand_passed is None:
-                if self.vc is None:
-                    self.vc = await ctx.guild.voice_channels[0].connect()
-                    await ctx.e_say("Ok **{author}**, I'll join voice.")
-                else:
-                    await self.vc.disconnect()
-                    self.vc = None
-                    await ctx.e_say("Ok **{author}**, I'll leave voice.")
-            else:
-                await ctx.e_say("**{author}**, I don't understand that.")
+                await ctx.send(content="I don't understand that. "
+                                       "Use `~help jukebox` to find out how to use this command.")
 
     @jukebox.command(aliases=['yes', 'activate'])
     async def on(self, ctx: commands.Context):
         if self.vc is None:
             self.vc = await ctx.guild.voice_channels[0].connect()
-            await ctx.e_say("Ok **{author}**, I'll join voice.")
+            await ctx.send(content="Ok, I'll join voice.")
         else:
-            await ctx.e_say("**{author}**, I'm already in voice chat.")
+            await ctx.send(content="I'm already in voice chat.")
 
     @jukebox.command(aliases=['no', 'deactivate'])
     async def off(self, ctx: commands.Context):
         if self.vc is None:
-            await ctx.e_say("**{author}**, I'm not in voice chat.")
+            await ctx.send(content="I'm not in voice chat.")
         else:
             await self.vc.disconnect()
             self.vc = None
-            await ctx.e_say("Ok **{author}**, I'll leave voice.")
+            await ctx.send(content="Ok, I'll leave voice.")
 
     @jukebox.command()
-    async def play(self, ctx: commands.Context, url: str):
-        post = discord.Embed()
-        post.set_thumbnail(url=ctx.me.avatar_url)
+    async def play(self, ctx: commands.Context, url: str = None):
         if self.vc is not None:
-            post.description = "**{0}**, loading...".format(ctx.author)
-            msg = await ctx.send(embed=post)
-            info = await self.extract_info(ctx.bot.loop, url, download=True)
-            self.play(ctx.bot.loop, self.ytdl.prepare_filename(info))
-            post.description = "**{0}**, playing **{1}**".format(ctx.author, info['title'])
-            await msg.edit(embed=post)
+            if url is None:
+                if self.queue:
+                    await self.next()
+                else:
+                    await ctx.send(content="You need to give a url to play, or have something queued.")
+            else:
+                post = discord.Embed()
+                post.set_thumbnail(url=ctx.me.avatar_url)
+                post.description = "**{0}**, loading...".format(ctx.author)
+                msg = await ctx.send(embed=post)
+                info = await self.extract_info(ctx.bot.loop, url, download=True)
+                self.play(ctx.bot.loop, self.ytdl.prepare_filename(info))
+                post.description = "**{0}**, playing **{1}**".format(ctx.author, info['title'])
+                await msg.edit(embed=post)
         else:
-            post.description = "**{0}**, I'm not currently in voice.".format(ctx.author)
-            await ctx.send(embed=post)
+            await ctx.send(content="I'm not currently in voice. Use `~jukebox on` to make me join.")
 
     @jukebox.command()
     async def stop(self, ctx: commands.Context):
         if self.vc is not None:
             self.vc.stop()
-            await ctx.e_say("**{author}**, stopping")
+            await ctx.send(content="Stopping")
         else:
-            await ctx.e_say("**{author}**, I'm not currently in voice.")
+            await ctx.send(content="I'm not currently in voice. Use `~jukebox on` to make me join.")
 
     @jukebox.command()
     async def volume(self, ctx: commands.Context, vol: int = None):
