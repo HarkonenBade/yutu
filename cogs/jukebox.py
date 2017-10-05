@@ -107,7 +107,7 @@ class Jukebox:
         if vol is not None:
             vol = max(0, min(100, vol))
             self.vol = vol
-            if self.vc.source is not None:
+            if self.vc is not None and self.vc.source is not None:
                 self.vc.source.volume = vol/100.0
             await ctx.send(content="Setting volume to {}%".format(vol))
         else:
