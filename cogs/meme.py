@@ -35,6 +35,7 @@ class Meme:
             (await _agen(ctx.bot.loop, top, bottom, tmp, tmp2, 1024, 1024))
             tmp2.seek(0)
             await ctx.send(file=discord.File(tmp2, filename="meme.png"))
+            await ctx.message.delete()
 
 
 async def _agen(loop, *args, **kwargs):
