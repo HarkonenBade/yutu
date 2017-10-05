@@ -21,3 +21,4 @@ class Manage:
         """
         msg = "Request from {}:\n".format(ctx.author.mention) + " ".join(args)
         await ctx.bot.get_user(ctx.bot.owner_id).send(content=msg)
+        await ctx.message.add_reaction("✅")
