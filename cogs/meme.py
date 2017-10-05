@@ -8,20 +8,30 @@ from discord.ext import commands
 
 
 class Meme:
-    @commands.command()
-    async def meme(self, ctx: commands.Context, user: discord.Member, *, args):
+    @commands.command(usage="{@user|url} top text | bottom text")
+    async def meme(self, ctx: commands.Context, image_source: str, *args):
         """
         Create a meme from a users avatar
-        
-        meme @user top text | bottom text
         """
         async with ctx.typing():
-            tmp = io.BytesIO(requests.get(user.avatar_url_as(format="png")).content)
+            try:
+                user = await commands.MemberConverter().convert(ctx, image_source)
+                tmp = io.BytesIO(requests.get(user.avatar_url_as(format="png")).content)
+            except commands.BadArgument:
+                try:
+                    tmp = io.BytesIO(requests.get(image_source).content)
+                except requests.ConnectionError:
+                    await ctx.send(content="Please post either a mention or a url.")
+                    return
             tmp2 = io.BytesIO()
-            msg_text = await commands.clean_content().convert(ctx, args)
+            msg_text = await commands.clean_content().convert(ctx, " ".join(args))
             captions = msg_text.upper().split("|")
-            top = captions[0].strip()
-            bottom = captions[1].strip()
+            if len(captions) == 2:
+                top = captions[0].strip()
+                bottom = captions[1].strip()
+            else:
+                top = captions[0].strip()
+                bottom = "bottom text"
             (await _agen(ctx.bot.loop, top, bottom, tmp, tmp2, 1024, 1024))
             tmp2.seek(0)
             await ctx.send(file=discord.File(tmp2, filename="meme.png"))
@@ -67,20 +77,7 @@ def _generate(top, bottom, background, output, width, height):
             background_image = background_image.convert('RGBA')
             background_image.format = 'PNG'
 
-    # Resize to a maximum height and width
-    ratio = background_image.size[0] / background_image.size[1]
-    if width and height:
-        if width < height * ratio:
-            dimensions = width, int(width / ratio)
-        else:
-            dimensions = int(height * ratio), height
-    elif width:
-        dimensions = width, int(width / ratio)
-    elif height:
-        dimensions = int(height * ratio), height
-    else:
-        dimensions = 600, int(600 / ratio)
-    image = background_image.resize(dimensions, ImageFile.LANCZOS)
+    image = _resize(background_image, width, height)
     image.format = 'PNG'
 
     # Draw image
@@ -118,10 +115,6 @@ def _generate(top, bottom, background, output, width, height):
                         top, top_font, top_font_size)
     _draw_outlined_text(draw, bottom_text_position,
                         bottom, bottom_font, bottom_font_size)
-
-    # Pad image if a specific dimension is requested
-    if width and height:
-        image = _add_blurred_background(image, background_image, width, height)
 
     image.save(output, format="png")
 
@@ -166,31 +159,24 @@ def _draw_outlined_text(draw_image, text_position, text, font, font_size):
                               font=font, align='center')
 
 
-def _add_blurred_background(foreground, background, width, height):
+def _resize(foreground, width, height):
     """Add a blurred background to match the requested dimensions."""
     base_width, base_height = foreground.size
+    ratio = width/height
 
-    border_width = min(width, base_width + 2)
-    border_height = min(height, base_height + 2)
-    border_dimensions = border_width, border_height
-    border = ImageFile.new('RGB', border_dimensions)
-    border.paste(foreground, ((border_width - base_width) // 2,
-                              (border_height - base_height) // 2))
+    if base_width > base_height:
+        paste_width = base_width
+        paste_height = int(base_width*ratio)
+    else:
+        paste_width = int(base_height*ratio)
+        paste_height = base_height
+    paste_dimensions = paste_width, paste_height
+    paste = ImageFile.new('RGB', paste_dimensions)
+    paste.paste(foreground, ((paste_width - base_width) // 2,
+                             (paste_height - base_height) // 2))
 
     padded_dimensions = (width, height)
-    padded = background.resize(padded_dimensions, ImageFile.LANCZOS)
-
-    darkened = padded.point(lambda p: p * 0.4)
-
-    blurred = darkened.filter(ImageFilter.GaussianBlur(5))
-    blurred.format = 'PNG'
-
-    blurred_width, blurred_height = blurred.size
-    offset = ((blurred_width - border_width) // 2,
-              (blurred_height - border_height) // 2)
-    blurred.paste(border, offset)
-
-    return blurred
+    return paste.resize(padded_dimensions, ImageFile.LANCZOS)
 
 
 def _maximize_font_size(font, text, max_size):
