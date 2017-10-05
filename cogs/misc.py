@@ -1,4 +1,5 @@
 import hashlib
+import random
 
 import discord
 from discord.ext import commands
@@ -97,3 +98,14 @@ class Misc:
         await post.add_reaction("👍")
         await post.add_reaction("🤷")
         await post.add_reaction("👎")
+
+    @commands.command()
+    async def f(self, ctx: commands.Context):
+        """
+        Pay your respects
+        """
+        await ctx.send(content="**{}** has paid their respects {}".format(ctx.author, random.choice([':heart:',
+                                                                                                     ':yellow_heart:',
+                                                                                                     ':blue_heart:',
+                                                                                                     ':purple_heart:',
+                                                                                                     ':green_heart:'])))
