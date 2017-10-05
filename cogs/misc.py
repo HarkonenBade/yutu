@@ -104,8 +104,10 @@ class Misc:
         """
         Pay your respects
         """
-        await ctx.send(content="**{}** has paid their respects {}".format(ctx.author, random.choice([':heart:',
-                                                                                                     ':yellow_heart:',
-                                                                                                     ':blue_heart:',
-                                                                                                     ':purple_heart:',
-                                                                                                     ':green_heart:'])))
+        await ctx.send(content="**{}** has paid {} respects {}".format(ctx.author,
+                                                                       ctx.author.pronouns().dep_poss,
+                                                                       random.choice([':heart:',
+                                                                                      ':yellow_heart:',
+                                                                                      ':blue_heart:',
+                                                                                      ':purple_heart:',
+                                                                                      ':green_heart:'])))
