@@ -77,6 +77,7 @@ class Jukebox:
                 else:
                     await ctx.send(content="You need to give a url to play, or have something queued.")
             else:
+                await ctx.message.delete()
                 post = discord.Embed()
                 post.set_thumbnail(url=ctx.me.avatar_url)
                 post.description = "**{0}**, loading...".format(ctx.author)
