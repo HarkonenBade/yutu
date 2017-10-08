@@ -14,24 +14,23 @@ class Misc:
         await ctx.send('{0.mention} :pray: {1.mention}'.format(ctx.me, ctx.author))
 
     @commands.command()
-    async def rate(self, ctx: commands.Context, *args):
+    async def rate(self, ctx: commands.Context, *, subject):
         """
         Ask Yutu to rate a thing
         """
-        sample = " ".join(args)
         hasher = hashlib.sha256()
-        hasher.update(sample.lower().encode("UTF-8"))
+        hasher.update(subject.lower().encode("UTF-8"))
         rate = int(hasher.hexdigest(), 16) % 1001
         await ctx.e_say("**{me}** gives **{item}** a rating of **{rate}/100**",
-                        item=sample,
+                        item=subject,
                         rate=rate/10.0)
 
     @commands.command()
-    async def numerology(self, ctx: commands.Context, *args):
+    async def numerology(self, ctx: commands.Context, *, subject):
         """
         Ask Yutu to do a numerology calculation on something
         """
-        subject = await commands.clean_content().convert(ctx, " ".join(args))
+        subject = await commands.clean_content().convert(ctx, subject)
         post = "```\nCalculating numerological result for \"{}\"\n\n".format(subject)
         chars = [c.upper() for c in subject if c.isalpha()]
         post += " + ".join(chars)
@@ -62,11 +61,11 @@ class Misc:
         await ctx.send(content=post)
 
     @commands.command()
-    async def commend(self, ctx: commands.Context, user: discord.Member, *args):
+    async def commend(self, ctx: commands.Context, user: discord.Member, *, reason):
         """
         Commend a user, with optional reason
         """
-        reason = await commands.clean_content().convert(ctx, " ".join(args))
+        reason = await commands.clean_content().convert(ctx, reason)
         embed = discord.Embed()
         if reason:
             embed.description = (":trophy::military_medal: "
@@ -79,20 +78,21 @@ class Misc:
                                  " :military_medal::trophy:").format(ctx.author, user)
         await ctx.send(embed=embed)
 
-    @commands.command(usage="msg")
-    async def clap(self, ctx: commands.Context, *args):
+    @commands.command()
+    async def clap(self, ctx: commands.Context, *, msg):
         """
         :clap: your :clap: message :clap: here :clap:
         """
-        msg = await commands.clean_content().convert(ctx, " ".join(args))
-        await ctx.send(content=":clap: " + " :clap: ".join(msg.split(" ")) + " :clap:")
+        msg = await commands.clean_content().convert(ctx, msg)
+        await ctx.send(content="\n".join([":clap: " + " :clap: ".join(line.split(" ")) + " :clap:"
+                                          for line in msg.split('\n')]))
 
     @commands.command()
-    async def vote(self, ctx: commands.Context, *args):
+    async def vote(self, ctx: commands.Context, *, msg):
         """
         Start a vote on something.
         """
-        msg = await commands.clean_content().convert(ctx, " ".join(args))
+        msg = await commands.clean_content().convert(ctx, msg)
         post = await ctx.send(content=":inbox_tray: A vote has been started by **{0.display_name}**".format(ctx.author),
                               embed=discord.Embed(title=msg))
         await post.add_reaction("👍")
@@ -112,12 +112,12 @@ class Misc:
                                                                                       ':purple_heart:',
                                                                                       ':green_heart:'])))
 
-    @commands.command(usage="msg")
-    async def owo(self, ctx: commands.Context, *, args):
+    @commands.command()
+    async def owo(self, ctx: commands.Context, *, msg):
         """
         Say something in a 'cute' way
         """
-        msg = await commands.clean_content().convert(ctx, args)
+        msg = await commands.clean_content().convert(ctx, msg)
         transforms = {'na': 'nya',
                       'ne': 'nye',
                       'ni': 'nyi',

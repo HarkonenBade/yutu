@@ -33,8 +33,8 @@ class Facts:
                                                     .set_author(name=author.display_name))
 
     @root.command()
-    async def add(self, ctx: commands.Context, *args):
-        f = await commands.clean_content().convert(ctx, " ".join(args))
+    async def add(self, ctx: commands.Context, *, fact):
+        f = await commands.clean_content().convert(ctx, fact)
         with orm.db_session:
             self.Fact(text=f, author=str(ctx.author.mention))
         await ctx.send(content="Adding fact to database.")

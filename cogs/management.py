@@ -15,10 +15,10 @@ class Manage:
         ctx.bot.loop.stop()
 
     @commands.command()
-    async def request(self, ctx: commands.Context, *args):
+    async def request(self, ctx: commands.Context, *, feature):
         """
         Requests a feature from the author, do not abuse
         """
-        msg = "Request from {}:\n".format(ctx.author.mention) + " ".join(args)
+        msg = "Request from {}:\n".format(ctx.author.mention) + feature
         await ctx.bot.get_user(ctx.bot.owner_id).send(content=msg)
         await ctx.message.add_reaction("✅")
