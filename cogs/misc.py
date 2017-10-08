@@ -113,11 +113,18 @@ class Misc:
                                                                                       ':green_heart:'])))
 
     @commands.command(usage="msg")
-    async def owo(self, ctx: commands.Context, *args):
+    async def owo(self, ctx: commands.Context, *, args):
         """
         Say something in a 'cute' way
         """
-        msg = await commands.clean_content().convert(ctx, " ".join(args))
-        await ctx.send(content=msg.translate({ord('n'): 'ny',
-                                              ord('r'): 'w',
-                                              ord('l'): 'w'}))
+        msg = await commands.clean_content().convert(ctx, args)
+        transforms = {'na': 'nya',
+                      'ne': 'nye',
+                      'ni': 'nyi',
+                      'nu': 'nyu',
+                      'no': 'nyo',
+                      'r': 'w',
+                      'l': 'w'}
+        for src, dst in transforms.items():
+            msg = msg.replace(src, dst)
+        await ctx.send(content=msg)
