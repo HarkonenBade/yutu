@@ -79,7 +79,7 @@ class Misc:
                                  " :military_medal::trophy:").format(ctx.author, user)
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(usage="msg")
     async def clap(self, ctx: commands.Context, *args):
         """
         :clap: your :clap: message :clap: here :clap:
@@ -111,3 +111,11 @@ class Misc:
                                                                                       ':blue_heart:',
                                                                                       ':purple_heart:',
                                                                                       ':green_heart:'])))
+
+    @commands.command(usage="msg")
+    async def owo(self, ctx: commands.Context, *args):
+        """
+        Say something in a 'cute' way
+        """
+        msg = await commands.clean_content().convert(ctx, " ".join(args))
+        await ctx.send(content=msg.replace("n", "ny").replace("l", "w"))
