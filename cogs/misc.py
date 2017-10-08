@@ -119,6 +119,5 @@ class Misc:
         """
         msg = await commands.clean_content().convert(ctx, " ".join(args))
         await ctx.send(content=msg.translate({ord('n'): 'ny',
-                                              ord('t'): 'ty',
                                               ord('r'): 'w',
                                               ord('l'): 'w'}))
