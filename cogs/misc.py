@@ -126,5 +126,5 @@ class Misc:
                       'r': 'w',
                       'l': 'w'}
         for src, dst in transforms.items():
-            msg = msg.replace(src, dst)
+            msg = msg.replace(src, dst).replace(src.upper(), dst.upper()).replace(src.title(), dst.title())
         await ctx.send(content=msg)
