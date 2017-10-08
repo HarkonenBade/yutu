@@ -118,4 +118,7 @@ class Misc:
         Say something in a 'cute' way
         """
         msg = await commands.clean_content().convert(ctx, " ".join(args))
-        await ctx.send(content=msg.replace("n", "ny").replace("l", "w"))
+        await ctx.send(content=msg.translate({ord('n'): 'ny',
+                                              ord('t'): 'ty',
+                                              ord('r'): 'w',
+                                              ord('l'): 'w'}))
