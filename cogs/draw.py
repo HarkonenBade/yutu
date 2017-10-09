@@ -47,10 +47,12 @@ class Draw:
         Ship two users together
         """
         with ctx.typing():
+            name = str(first)[:len(str(first))//2] + str(second)[len(str(second))//2:]
             out = io.BytesIO()
             await ctx.bot.loop.run_in_executor(None, lambda: _ship(first, second, out))
             out.seek(0)
-            await ctx.send(file=discord.File(out, filename="ship.png"))
+            await ctx.send(content="Behold the new ship {}".format(name),
+                           file=discord.File(out, filename="ship.png"))
 
 
 def _ship(u1: discord.Member, u2: discord.Member, out: io.BytesIO):
