@@ -1,13 +1,17 @@
 import requests
 import io
 
-from PIL import Image as ImageFile, ImageFont, ImageDraw, ImageFilter
+from PIL import Image as ImageFile, ImageFont, ImageDraw
 
 import discord
 from discord.ext import commands
 
 
-class Meme:
+# Source: https://commons.wikimedia.org/wiki/File:Heart_corazón.svg
+HEART = "./data/heart.png"
+
+
+class Draw:
     @commands.command(usage="{@user|url} top text | bottom text")
     async def meme(self, ctx: commands.Context, image_source: str, *args):
         """
@@ -36,6 +40,30 @@ class Meme:
             tmp2.seek(0)
             await ctx.send(file=discord.File(tmp2, filename="meme.png"))
             await ctx.message.delete()
+
+    @commands.command()
+    async def ship(self, ctx: commands.Context, first: discord.Member, second: discord.Member):
+        """
+        Ship two users together
+        """
+        with ctx.typing():
+            out = io.BytesIO()
+            await ctx.bot.loop.run_in_executor(None, lambda: _ship(first, second, out))
+            out.seek(0)
+            await ctx.send(file=discord.File(out, filename="ship.png"))
+
+
+def _ship(u1: discord.Member, u2: discord.Member, out: io.BytesIO):
+    av_first = ImageFile.open(io.BytesIO(requests.get(u1.avatar_url_as(format="png", size=1024)).content))
+    av_first = av_first.resize((1024, 1024))
+    av_second = ImageFile.open(io.BytesIO(requests.get(u2.avatar_url_as(format="png", size=1024)).content))
+    av_second = av_second.resize((1024, 1024))
+    heart = ImageFile.open(HEART)
+    result = ImageFile.new("RGBA", (1024 * 3, 1024))
+    result.paste(av_first)
+    result.paste(heart, box=(1024, 0))
+    result.paste(av_second, box=(2048, 0))
+    result.save(out, format="png")
 
 
 async def _agen(loop, *args, **kwargs):
