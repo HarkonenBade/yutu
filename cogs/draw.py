@@ -35,10 +35,11 @@ class Draw:
                 bottom = captions[1].strip()
             else:
                 top = captions[0].strip()
-                bottom = "bottom text"
+                bottom = "BOTTOM TEXT"
             (await _agen(ctx.bot.loop, top, bottom, tmp, tmp2, 1024, 1024))
             tmp2.seek(0)
-            await ctx.send(file=discord.File(tmp2, filename="meme.png"))
+            await ctx.send(content="Artistic content by {0.mention}".format(ctx.author),
+                           file=discord.File(tmp2, filename="meme.png"))
             await ctx.message.delete()
 
     @commands.command()
