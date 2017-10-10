@@ -1,4 +1,5 @@
 import requests
+import requests.exceptions
 import io
 
 from PIL import Image as ImageFile, ImageFont, ImageDraw
@@ -24,7 +25,7 @@ class Draw:
             except commands.BadArgument:
                 try:
                     tmp = io.BytesIO(requests.get(image_source).content)
-                except requests.ConnectionError:
+                except (requests.ConnectionError, requests.exceptions.MissingSchema):
                     await ctx.send(content="Please post either a mention or a url.")
                     return
             tmp2 = io.BytesIO()
