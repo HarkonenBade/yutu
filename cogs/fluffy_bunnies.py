@@ -21,7 +21,7 @@ class SoulPact:
 
     @commands.command(hidden=True)
     async def souls(self, ctx: commands.Context):
-        pactee = discord.utils.find(lambda r: r.name == "pactee", ctx.guild.roles)
+        pactee = discord.utils.find(lambda r: r.name == "acolyte", ctx.guild.roles)
         souls = sum(1 for m in ctx.guild.members if pactee in m.roles)
         if souls == 0:
             await ctx.e_say("Souls? I don't have any.\n"
@@ -38,7 +38,7 @@ class SoulPact:
 
     @commands.command(hidden=True)
     async def soulpact(self, ctx: commands.Context):
-        pactee = discord.utils.find(lambda r: r.name == "pactee", ctx.guild.roles)
+        pactee = discord.utils.find(lambda r: r.name == "acolyte", ctx.guild.roles)
         if pactee in ctx.author.roles:
             await ctx.e_say("Oh **{author}**, you already sold your soul to me.\n*grins*")
         else:
