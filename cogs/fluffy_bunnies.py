@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 REDEYE_BUN = "https://i.imgur.com/1GCqgcR.png"
-
+PENTAGRAM = "https://i.imgur.com/L6qiCyv.png"
 
 class SoulPact:
     @commands.command(hidden=True)
@@ -21,8 +21,8 @@ class SoulPact:
 
     @commands.command(hidden=True)
     async def souls(self, ctx: commands.Context):
-        pactee = discord.utils.find(lambda r: r.name == "acolyte", ctx.guild.roles)
-        souls = sum(1 for m in ctx.guild.members if pactee in m.roles)
+        acolyte = discord.utils.find(lambda r: r.name == "acolyte", ctx.guild.roles)
+        souls = sum(1 for m in ctx.guild.members if acolyte in m.roles)
         if souls == 0:
             await ctx.e_say("Souls? I don't have any.\n"
                             "Would you give me yours?")
@@ -37,9 +37,72 @@ class SoulPact:
                             thumbnail=REDEYE_BUN)
 
     @commands.command(hidden=True)
+    @commands.cooldown(rate=1, per=3600, type=commands.BucketType.guild)
+    @commands.guild_only()
+    @commands.bot_has_permissions(manage_messages=True)
+    async def rite(self, ctx: commands.Context):
+        acolyte = discord.utils.find(lambda r: r.name == "acolyte", ctx.guild.roles)
+        souls = sum(1 for m in ctx.guild.members if acolyte in m.roles)
+        if souls < 20:
+            await ctx.e_say("I don't think that will work, I need more power first.",
+                            thumbnail=REDEYE_BUN)
+        else:
+            post = discord.Embed(description="A cold wind races through the channel, "
+                                             "and blood red lines start creeping across the floor.")
+            post.set_image(url=PENTAGRAM)
+            msg = await ctx.send(embed=post)
+            await ctx.e_say("Come my acolytes, speak my name and give power to this rite of the most benevolent bun.",
+                            thumbnail=REDEYE_BUN)
+            power = 0
+            participants = set()
+            weakening = False
+            complete = False
+            def mentioned(msg):
+                return ctx.me.mentioned_in(msg) and acolyte in msg.author.roles
+            while not complete:
+                try:
+                    m = await ctx.bot.wait_for("message", check=mentioned, timeout=30)
+                except asyncio.TimeoutError:
+                    if not weakening:
+                        await ctx.e_say("The ritual is weakening my acolytes, "
+                                        "if you do not add more power soon it will fail.",
+                                        thumbnail=REDEYE_BUN)
+                        weakening = True
+                    else:
+                        await msg.delete()
+                        await ctx.e_say("It is no good, the power will not hold together. "
+                                        "We must try again later.")
+                        return
+                else:
+                    if m.author in participants:
+                        await ctx.send(content="You must find your fellow acolytes.")
+                    else:
+                        power += 1
+                        participants.add(m.author)
+                        weakening = False
+                        if power > 4:
+                            complete = True
+                        elif power > 3:
+                            await ctx.send(content="So close my acolytes.")
+                        elif power > 1:
+                            await ctx.send(content="Perfect, just a few more acolytes.")
+                        else:
+                            await ctx.send(content="Yes, now gather more of your fellows.")
+            await ctx.e_say("Excellent work my acolytes, you have wrought the blessing of "
+                            "the most benevolent bun into this channel.",
+                            thumbnail=REDEYE_BUN)
+            post.description = ("A rune of shimmering red is engraved into the ground, "
+                                "the gaze of the most benevolent bun shines down on {}, "
+                                "thanks to the efforts of {}.").format(ctx.channel.mention,
+                                                                       ", ".join([u.mention for u in participants]))
+            await msg.edit(embed=post)
+            await msg.pin()
+
+
+    @commands.command(hidden=True)
     async def soulpact(self, ctx: commands.Context):
-        pactee = discord.utils.find(lambda r: r.name == "acolyte", ctx.guild.roles)
-        if pactee in ctx.author.roles:
+        acolyte = discord.utils.find(lambda r: r.name == "acolyte", ctx.guild.roles)
+        if acolyte in ctx.author.roles:
             await ctx.e_say("Oh **{author}**, you already sold your soul to me.\n*grins*")
         else:
             await ctx.e_say("Please **{author}**, give me your soul?\n"
@@ -57,6 +120,6 @@ class SoulPact:
             except asyncio.TimeoutError:
                 await ctx.send(":frowning:")
             else:
-                await ctx.author.add_roles(pactee, reason="Soul Pact")
+                await ctx.author.add_roles(acolyte, reason="Soul Pact")
                 await ctx.e_say("*The pact is complete*",
                                 thumbnail=REDEYE_BUN)

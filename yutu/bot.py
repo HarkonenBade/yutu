@@ -25,5 +25,7 @@ class Yutu(commands.Bot):
         if isinstance(exception, commands.errors.MissingRequiredArgument):
             for page in await self.formatter.format_help_for(ctx, ctx.command):
                 await ctx.send(page)
+        elif isinstance(exception, commands.CommandOnCooldown):
+            await ctx.send(content=str(exception))
         else:
             await super().on_command_error(ctx, exception)
