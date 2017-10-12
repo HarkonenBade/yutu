@@ -5,3 +5,4 @@ pynacl
 youtube_dl
 pony
 psycopg2
+agithub
