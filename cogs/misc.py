@@ -18,6 +18,7 @@ class Misc:
         """
         Ask Yutu to rate a thing
         """
+        subject = await commands.clean_content().convert(ctx, subject)
         hasher = hashlib.sha256()
         hasher.update(subject.lower().encode("UTF-8"))
         rate = int(hasher.hexdigest(), 16) % 1001
