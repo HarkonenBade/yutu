@@ -10,6 +10,9 @@ class SoulPact:
     @commands.command(hidden=True)
     @commands.has_permissions(kick_members=True)
     async def slay(self, ctx: commands.Context, user: discord.Member):
+        """
+        Kicks a user from the server 
+        """
         if user is None:
             await ctx.e_say("**{author}**, I'm sorry I don't know that person")
         else:
@@ -21,6 +24,9 @@ class SoulPact:
 
     @commands.command(hidden=True)
     async def souls(self, ctx: commands.Context):
+        """
+        How much power does Yutu posess
+        """
         acolyte = discord.utils.find(lambda r: r.name == "acolyte", ctx.guild.roles)
         souls = sum(1 for m in ctx.guild.members if acolyte in m.roles)
         if souls == 0:
@@ -41,6 +47,9 @@ class SoulPact:
     @commands.guild_only()
     @commands.bot_has_permissions(manage_messages=True)
     async def rite(self, ctx: commands.Context):
+        """
+        Conduct a rite of the most beneficent bun, you will need allies for this.
+        """
         acolyte = discord.utils.find(lambda r: r.name == "acolyte", ctx.guild.roles)
         souls = sum(1 for m in ctx.guild.members if acolyte in m.roles)
         if souls < 20:
@@ -101,6 +110,9 @@ class SoulPact:
 
     @commands.command(hidden=True)
     async def soulpact(self, ctx: commands.Context):
+        """
+        Pledge your soul to Yutu
+        """
         acolyte = discord.utils.find(lambda r: r.name == "acolyte", ctx.guild.roles)
         if acolyte in ctx.author.roles:
             await ctx.e_say("Oh **{author}**, you already sold your soul to me.\n*grins*")
