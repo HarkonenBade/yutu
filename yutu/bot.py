@@ -22,9 +22,9 @@ class Yutu(commands.Bot):
         self.owner_id = (await self.application_info()).owner.id
 
     async def on_command_error(self, ctx: commands.Context, exception):
-        if isinstance(exception, commands.errors.MissingRequiredArgument):
-            for page in await self.formatter.format_help_for(ctx, ctx.command):
-                await ctx.send(page)
+        if(isinstance(exception, commands.errors.MissingRequiredArgument) or
+           isinstance(exception, commands.errors.BadArgument)):
+            await ctx.print_help()
         elif isinstance(exception, commands.CommandOnCooldown):
             await ctx.send(content=str(exception))
         else:

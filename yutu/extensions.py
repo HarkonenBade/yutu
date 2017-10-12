@@ -17,6 +17,11 @@ async def e_say(self: commands.Context, text: str, target: discord.Member = None
     post.description = text.format(**args)
     return await self.send(embed=post)
 
+async def print_help(self: commands.Context):
+    for page in await self.bot.formatter.format_help_for(self, self.command):
+        await self.send(page)
+
+commands.Context.print_help = print_help
 commands.Context.e_say = e_say
 
 discord.Member.__str__ = lambda self: self.display_name
@@ -35,3 +40,5 @@ def pronouns(self):
     return Pronouns('they', 'them', 'their', 'theirs')
 
 discord.Member.pronouns = pronouns
+
+
