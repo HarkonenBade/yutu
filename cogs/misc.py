@@ -128,3 +128,20 @@ class Misc:
         for src, dst in transforms.items():
             msg = msg.replace(src, dst).replace(src.upper(), dst.upper()).replace(src.title(), dst.title())
         await ctx.send(content=msg)
+
+    @commands.command(aliases=['leet'])
+    async def l33t(self, ctx: commands.Context, *, msg):
+        """
+        L33t m3ss4g1ng
+        """
+        msg = await commands.clean_content().convert(ctx, msg)
+        transforms = {'e': '3',
+                      'i': '1',
+                      'o': '0',
+                      'a': '4',
+                      's': '5',
+                      'v': '\\\\/',
+                      'n': '|\\\\|'}
+        for src, dst in transforms.items():
+            msg = msg.replace(src.lower(), dst)
+        await ctx.send(content=msg)
