@@ -1,7 +1,5 @@
-import hashlib
 import random
 
-import discord
 from discord.ext import commands
 
 class ShitPosting:
@@ -13,6 +11,22 @@ class ShitPosting:
         msg = await commands.clean_content().convert(ctx, msg)
         await ctx.send(content="\n".join([":clap: " + " :clap: ".join(line.split(" ")) + " :clap:"
                                           for line in msg.split('\n')]))
+
+    @commands.command()
+    async def bunclap(self, ctx: commands.Context, *, msg):
+        """
+        :bun: your :bun: message :bun: here :bun:
+        """
+        class BunGen():
+            def __getattr__(self, item):
+                return random.choice([':peekabun:',
+                                      ':peekafrappbun:',
+                                      ':peekacarnagebun:'])
+
+        msg = await commands.clean_content().convert(ctx, msg)
+        await ctx.send(content="\n".join(["{0.bun} " + " {0.bun} ".join(line.split(" ")) + " {0.bun}"
+                                          for line in msg.split('\n')]).format(BunGen()))
+
 
     @commands.command()
     async def owo(self, ctx: commands.Context, *, msg):
