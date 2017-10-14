@@ -41,4 +41,8 @@ def pronouns(self):
 
 discord.Member.pronouns = pronouns
 
+class DummyArg:
+    def __init__(self, name):
+        self.name = name
 
+commands.DummyArg = DummyArg
