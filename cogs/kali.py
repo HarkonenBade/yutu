@@ -1,3 +1,5 @@
+import random
+
 import discord
 from discord.ext import commands
 
@@ -16,3 +18,15 @@ class KaliCommands:
         post.set_image(url=TAKE_A_MOMENT)
         await ctx.send(content="{0.mention} Stop, take a moment and be mindful.".format(kali),
                        embed=post)
+
+    @commands.command()
+    @commands.cooldown(1, 30, commands.BucketType.user)
+    async def kalinocoffee(self, ctx: commands.Context):
+        """
+        Kali no, not the coffee
+        """
+        kali = ctx.bot.get_user(KALI)
+        await ctx.message.add_reaction('✅')
+        await kali.send(random.choice(["No Kali, don't drink the coffee",
+                                       "Not with the bean juice Kali",
+                                       "None Coffee - Left NoVibrate"]))
