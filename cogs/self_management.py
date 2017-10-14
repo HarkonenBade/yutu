@@ -13,7 +13,7 @@ class SelfManagement:
             await ctx.send("{0.mention}, you are not allowed to give yourself the salty role.".format(ctx.author))
             return
 
-        salty = get(ctx.guild.roles, name="salty")
+        salty = get(ctx.guild.roles, name="im salty")
         if salty in ctx.author.roles:
             await ctx.send("But {0.mention}, you are already salty.".format(ctx.author))
         else:
