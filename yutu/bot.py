@@ -14,7 +14,8 @@ class Yutu(commands.Bot):
     def __init__(self):
         super().__init__(commands.when_mentioned_or("~"),
                          game=discord.Game(name="~help"),
-                         description=DESCRIPTION)
+                         description=DESCRIPTION,
+                         pm_help=None)
         self.db = orm.Database()
 
     async def on_ready(self):
