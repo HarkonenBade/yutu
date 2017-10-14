@@ -12,6 +12,7 @@ class KaliCommands:
         Kali is being too intense
         """
         kali = ctx.bot.get_user(KALI)
-        post = discord.Embed(description="{0.mention} Stop, take a moment and be mindful.".format(kali))
+        post = discord.Embed()
         post.set_image(url=TAKE_A_MOMENT)
-        await ctx.send(embed=post)
+        await ctx.send(content="{0.mention} Stop, take a moment and be mindful.".format(kali),
+                       embed=post)
