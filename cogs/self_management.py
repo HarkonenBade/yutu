@@ -24,7 +24,7 @@ class SelfManagement:
             await ctx.send("But {0.mention}, you are already salty.".format(ctx.author))
         else:
             await ctx.author.add_roles(salty, reason="Added by ~imsalty command.")
-            await ctx.send("Ok {0.mention}, Granting you access to #rwde and #misc_rwde")
+            await ctx.send("Ok {0.mention}, Granting you access to #rwde and #misc_rwde".format(ctx.author))
 
     @commands.command()
     @is_role_reqs()
@@ -39,7 +39,7 @@ class SelfManagement:
             await ctx.send("But {0.mention}, you have already been spoiled.".format(ctx.author))
         else:
             await ctx.author.add_roles(spoild, reason="Added by ~spoilme command.")
-            await ctx.send("Ok {0.mention}, Granting you access to #rwby_spoilers and #rwde_spoilers")
+            await ctx.send("Ok {0.mention}, Granting you access to #rwby_spoilers and #rwde_spoilers".format(ctx.author))
 
     @commands.command()
     @is_role_reqs()
