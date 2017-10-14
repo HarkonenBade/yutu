@@ -22,12 +22,13 @@ class Draw:
             try:
                 user = await commands.MemberConverter().convert(ctx, image_source)
                 tmp = io.BytesIO(requests.get(user.avatar_url_as(format="png")).content)
+                text = "A meme of {0.mention} by {1.mention}".format(user, ctx.author)
             except commands.BadArgument:
                 try:
                     tmp = io.BytesIO(requests.get(image_source).content)
+                    text = "Artistic content by {0.mention}".format(ctx.author)
                 except (requests.ConnectionError, requests.exceptions.MissingSchema):
-                    await ctx.send(content="Please post either a mention or a url.")
-                    return
+                    raise commands.errors.MissingRequiredArgument(commands.DummyArg("{@user|url}"))
             tmp2 = io.BytesIO()
             msg_text = await commands.clean_content().convert(ctx, " ".join(args))
             captions = msg_text.upper().split("|")
@@ -39,7 +40,7 @@ class Draw:
                 bottom = "BOTTOM TEXT"
             (await _agen(ctx.bot.loop, top, bottom, tmp, tmp2, 1024, 1024))
             tmp2.seek(0)
-            await ctx.send(content="Artistic content by {0.mention}".format(ctx.author),
+            await ctx.send(content=text,
                            file=discord.File(tmp2, filename="meme.png"))
             await ctx.message.delete()
 
