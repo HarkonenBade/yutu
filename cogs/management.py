@@ -1,3 +1,5 @@
+import collections
+
 import discord
 from discord.ext import commands
 
@@ -35,3 +37,19 @@ class Manage:
                                                                             for c in commits])))
         else:
             await ctx.send(content="Error: Cannot reach github")
+
+    @commands.command(hidden=True)
+    @can_manage()
+    async def chatshare(self, ctx: commands.Context):
+        async with ctx.typing():
+            chat_log = collections.defaultdict(lambda: 0)
+            for channel in ctx.guild.channels:
+                if isinstance(channel, discord.TextChannel):
+                    async for msg in channel.history(limit=None):
+                        chat_log[msg.author] += 1
+            total_msgs = sum(chat_log.values())
+            await ctx.send("```{}```".format("\n".join(
+                ['{} - {} - {} - {:0.2f}%'.format(pos + 1, usr, msgs, (msgs/total_msgs)*100)
+                 for pos, (usr, msgs) in enumerate(sorted(chat_log.items(),
+                                                          key=lambda item: item[1],
+                                                          reverse=True))])))
