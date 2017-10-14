@@ -1,5 +1,7 @@
 import random
 
+import discord
+from discord.utils import get
 from discord.ext import commands
 
 class ShitPosting:
@@ -18,10 +20,11 @@ class ShitPosting:
         :bun: your :bun: message :bun: here :bun:
         """
         class BunGen():
+            bun_list = [get(ctx.guild.emojis, name='peekabun'),
+                        get(ctx.guild.emojis, name='peekafrappbun'),
+                        get(ctx.guild.emojis, name='peekacarnagebun')]
             def __getattr__(self, item):
-                return random.choice([':peekabun:',
-                                      ':peekafrappbun:',
-                                      ':peekacarnagebun:'])
+                return random.choice(self.bun_list)
 
         msg = await commands.clean_content().convert(ctx, msg)
         text = "\n".join(["{0.bun} " + " {0.bun} ".join(line.split(" ")) + " {0.bun}"
