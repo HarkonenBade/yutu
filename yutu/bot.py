@@ -17,6 +17,10 @@ class Yutu(commands.Bot):
                          description=DESCRIPTION,
                          pm_help=None)
         self.db = orm.Database()
+        self.get_command('help').after_invoke(self.post_help)
+
+    async def post_help(self, ctx: commands.Context):
+        await ctx.message.add_reaction("✅")
 
     async def on_ready(self):
         print('We have logged in as {0.user}'.format(self))
