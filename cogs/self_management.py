@@ -3,22 +3,16 @@ from discord.utils import get
 from discord.ext import commands
 
 
-def is_role_reqs():
-    ROLE_REQUESTS = 360514141271752704
-    def chk(ctx: commands.Context):
-        return ctx.channel.id == ROLE_REQUESTS
-    return commands.check(chk)
-
-
 class SelfManagement:
     @commands.command()
-    @is_role_reqs()
     async def imsalty(self, ctx: commands.Context):
         """
         Grants you access to the rwde channels
-        
-        Can only be used in #role_requests
         """
+        if get(ctx.guild.roles, name="no salt") in ctx.author.roles:
+            await ctx.send("{0.mention}, you are not allowed to give yourself the salty role.".format(ctx.author))
+            return
+
         salty = get(ctx.guild.roles, name="salty")
         if salty in ctx.author.roles:
             await ctx.send("But {0.mention}, you are already salty.".format(ctx.author))
@@ -27,13 +21,14 @@ class SelfManagement:
             await ctx.send("Ok {0.mention}, Granting you access to #rwde and #misc_rwde".format(ctx.author))
 
     @commands.command()
-    @is_role_reqs()
     async def spoilme(self, ctx: commands.Context):
         """
         Grants you access to the spoiler channels
-        
-        Can only be used in #role_requests
         """
+        if get(ctx.guild.roles, name="no spoilers") in ctx.author.roles:
+            await ctx.send("{0.mention}, you are not allowed to give yourself the spoil'd role.".format(ctx.author))
+            return
+
         spoild = get(ctx.guild.roles, name="spoil'd")
         if spoild in ctx.author.roles:
             await ctx.send("But {0.mention}, you have already been spoiled.".format(ctx.author))
@@ -42,15 +37,12 @@ class SelfManagement:
             await ctx.send("Ok {0.mention}, Granting you access to #rwby_spoilers and #rwde_spoilers".format(ctx.author))
 
     @commands.command()
-    @is_role_reqs()
     async def pronouns(self, ctx: commands.Context, *, pronouns):
         """
         Use to set your pronouns
         
         Enter any number of the following after the command, seperated by spaces:
         he, she, they, it
-        
-        Can only be used in #role_requests
         """
         roles = {"he": get(ctx.guild.roles, name="he/him"),
                  "she": get(ctx.guild.roles, name="she/her"),
