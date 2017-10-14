@@ -24,8 +24,9 @@ class ShitPosting:
                                       ':peekacarnagebun:'])
 
         msg = await commands.clean_content().convert(ctx, msg)
-        await ctx.send(content="\n".join(["{0.bun} " + " {0.bun} ".join(line.split(" ")) + " {0.bun}"
-                                          for line in msg.split('\n')]).format(BunGen()))
+        text = "\n".join(["{0.bun} " + " {0.bun} ".join(line.split(" ")) + " {0.bun}"
+                          for line in msg.split('\n')]).format(BunGen())
+        await (await ctx.send(text)).edit()
 
 
     @commands.command()
