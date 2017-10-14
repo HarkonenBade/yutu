@@ -1,4 +1,4 @@
-from . import facts, fluffy_bunnies, interact, jukebox, management, draw, misc, shitposting
+from . import facts, fluffy_bunnies, interact, jukebox, management, draw, misc, shitposting, self_management
 
 
 def setup(bot):
@@ -10,3 +10,4 @@ def setup(bot):
     bot.add_cog(misc.Misc())
     bot.add_cog(fluffy_bunnies.SoulPact())
     bot.add_cog(shitposting.ShitPosting())
+    bot.add_cog(self_management.SelfManagement())
