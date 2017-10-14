@@ -1,4 +1,4 @@
-from . import facts, fluffy_bunnies, interact, jukebox, management, draw, misc, shitposting, self_management
+from . import facts, fluffy_bunnies, interact, jukebox, management, draw, misc, shitposting, self_management, kali
 
 
 def setup(bot):
@@ -11,3 +11,4 @@ def setup(bot):
     bot.add_cog(fluffy_bunnies.SoulPact())
     bot.add_cog(shitposting.ShitPosting())
     bot.add_cog(self_management.SelfManagement())
+    bot.add_cog(kali.KaliCommands())
