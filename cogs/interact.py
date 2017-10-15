@@ -55,11 +55,13 @@ interact_fwrk(name='nibble',
 
 interact_fwrk(name='pat',
               text='**{0}** pats **{1}** gently',
-              help='Pat someone')
+              help='Pat someone',
+              aliases=['pats'])
 
 interact_fwrk(name='cuddle',
               text='**{0}** cuddles around **{1}**',
-              help='Give someone a cuddle')
+              help='Give someone a cuddle',
+              aliases=['cuddles'])
 
 interact_fwrk(name='noogie',
               text='**{0}** gives **{1}** a noogie',

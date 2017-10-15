@@ -68,7 +68,7 @@ class SelfManagement:
                 await ctx.author.add_roles(nwde, reason="Added by ~imlewd command.")
                 await ctx.send("Ok {0.mention}, Granting you access to #nwde and #dickposting".format(ctx.author))
 
-    @commands.command()
+    @commands.command(aliases=['pronoun'])
     async def pronouns(self, ctx: commands.Context, *, pronouns):
         """
         Use to set your pronouns
@@ -81,7 +81,10 @@ class SelfManagement:
                  "they": get(ctx.guild.roles, name="they/them"),
                  "it": get(ctx.guild.roles, name="it/its")}
 
-        roles_add = [roles[p] for p in pronouns.lower().split(" ")]
+        try:
+            roles_add = [roles[p] for p in pronouns.lower().split(" ")]
+        except KeyError:
+            raise commands.BadArgument()
         roles_remove = list(set(roles.values())-set(roles_add))
         await ctx.author.add_roles(*roles_add)
         await ctx.author.remove_roles(*roles_remove)
