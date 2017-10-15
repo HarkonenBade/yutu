@@ -38,7 +38,7 @@ class Draw:
             else:
                 top = captions[0].strip()
                 bottom = "BOTTOM TEXT"
-            (await _agen(ctx.bot.loop, top, bottom, tmp, tmp2, 1024, 1024))
+            (await _agen(ctx.bot.loop, _generate, top, bottom, tmp, tmp2, 1024, 1024))
             tmp2.seek(0)
             await ctx.send(content=text,
                            file=discord.File(tmp2, filename="meme.png"))
@@ -57,6 +57,62 @@ class Draw:
             await ctx.send(content="Behold the new ship {}".format(name),
                            file=discord.File(out, filename="ship.png"))
 
+    @commands.command(usage="text")
+    async def ah(self, ctx: commands.Context, *args):
+        """
+        Achievement get!
+        """
+        async with ctx.typing():
+            tmp = io.BytesIO()
+            msg_text = await commands.clean_content().convert(ctx, " ".join(args))
+            (await _agen(ctx.bot.loop, _achieve, msg_text, tmp))
+            tmp.seek(0)
+            await ctx.send(content="Achievement by {0.mention}".format(ctx.author),
+                           file=discord.File(tmp, filename="achieve.png"))
+            await ctx.message.delete()
+
+
+def _achieve(text: str, out: io.BytesIO):
+    mc = ImageFont.truetype("./data/minecraftia.ttf", 32)
+    icon = ImageFile.open("./data/achieve.png")
+    text_len = max(mc.getsize("Achievement get!")[0], mc.getsize(text)[0])
+
+    height = 128
+    width = text_len + 120 + 28
+
+    img = ImageFile.new("RGBA", (width, height))
+    draw = ImageDraw.Draw(img)
+
+    def draw_rect(x, y, w, h, fill):
+        draw.rectangle([x, y, x + w - 1, y + h - 1], fill=fill)
+
+    draw_rect(4, 4, width - 8, height - 8, (33, 33, 33, 255))
+    for coords in [(8, 4, width - 16, 8),
+                   (4, 8, 8, 112),
+                   (width - 12, 8, 8, 112),
+                   (8, 116, width - 16, 8),
+                   (8, 8, 8, 8),
+                   (8, 112, 8, 8),
+                   (width - 16, 8, 8, 8),
+                   (width - 16, 112, 8, 8)]:
+        draw_rect(*coords, (85, 85, 85, 255))
+
+    for coords in [(8, 0, width - 16, 4),
+                   (8, 124, width - 16, 4),
+                   (0, 8, 4, 112),
+                   (width - 4, 8, 4, 112),
+                   (4, 4, 4, 4),
+                   (4, 120, 4, 4),
+                   (width - 8, 4, 4, 4),
+                   (width - 8, 120, 4, 4)]:
+        draw_rect(*coords, (0, 0, 0, 255))
+
+    img.alpha_composite(icon, (32, 32))
+
+    draw.text((120, 20), "Achievement get!", font=mc, fill=(255, 255, 0, 255))
+    draw.text((120, 64), text, font=mc, fill=(255, 255, 255, 255))
+    img.save(out, format="png")
+
 
 def _ship(u1: discord.Member, u2: discord.Member, out: io.BytesIO):
     av_first = ImageFile.open(io.BytesIO(requests.get(u1.avatar_url_as(format="png", size=1024)).content))
@@ -71,8 +127,8 @@ def _ship(u1: discord.Member, u2: discord.Member, out: io.BytesIO):
     result.save(out, format="png")
 
 
-async def _agen(loop, *args, **kwargs):
-    return await loop.run_in_executor(None, lambda: _generate(*args, **kwargs))
+async def _agen(loop, func, *args, **kwargs):
+    return await loop.run_in_executor(None, lambda: func(*args, **kwargs))
 
 """
 The following licence applies to all code in this file below this point.
