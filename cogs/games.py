@@ -33,8 +33,10 @@ class Games:
                  get(ctx.guild.emojis, name='anorable'),
                  get(ctx.guild.emojis, name='aintLieing')]
 
+        content = discord.Embed()
+
         def gen_post(player, first, second, third, under_text=None, finish=False):
-            content = discord.Embed(description="**Welcome to Yutu's Casino {}!**\n\n".format(ctx.author))
+            content.description = "**Welcome to Yutu's Casino {}!**\n\n".format(ctx.author)
             content.description += "**[ {} {} {} ]**\n\n".format(first, second, third)
             if under_text is not None:
                 content.description += "{}\n".format(under_text)
@@ -42,20 +44,22 @@ class Games:
                 content.description += "You are out of coins.\n\n"
             else:
                 content.description += "You currently have **{}** coins.\n\n".format(player.coins)
+                print(player.coins)
             if finish:
                 content.description += "Thank you for playing!"
             else:
                 content.description += "Add a 🔁 react to spin the slots. Add ❌ to stop."
             return content
 
-        with orm.db_session():
+        with orm.db_session:
             await ctx.message.delete()
 
             try:
                 player = self.Player[ctx.author.id]
             except orm.ObjectNotFound:
                 player = self.Player(id=ctx.author.id, coins=10)
-            post = await ctx.send(embed=gen_post(player, '❓', '❓', '❓'))
+            gen_post(player, '❓', '❓', '❓')
+            post = await ctx.send(embed=content)
             await post.add_reaction('🔁')
             await post.add_reaction('❌')
 
@@ -84,7 +88,9 @@ class Games:
                     tag = "You win 8 coins!"
                 else:
                     tag = "Better luck next time."
-                await post.edit(embed=gen_post(player, first, second, third, under_text=tag))
-            await post.edit(embed=gen_post(player, '❓', '❓', '❓', finish=True))
+                gen_post(player, first, second, third, under_text=tag)
+                await post.edit(embed=content)
+            gen_post(player, '❓', '❓', '❓', finish=True)
+            await post.edit(embed=content)
             await asyncio.sleep(30)
             await post.delete()
