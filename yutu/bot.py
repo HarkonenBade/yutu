@@ -1,7 +1,11 @@
+import os
+
 import discord
 from discord.ext import commands
 
 from pony import orm
+
+import pytumblr
 
 DESCRIPTION = """
 Hi, I'm Yutu!
@@ -17,6 +21,12 @@ class Yutu(commands.Bot):
                          description=DESCRIPTION,
                          pm_help=None)
         self.db = orm.Database()
+        self.tumblr = pytumblr.TumblrRestClient(
+            os.environ['TUMBLR_CONSUMER_KEY'],
+            os.environ['TUMBLR_CONSUMER_SECRET'],
+            os.environ['TUMBLR_OAUTH_TOKEN'],
+            os.environ['TUMBLR_OAUTH_SECRET']
+        )
         self.get_command('help').after_invoke(self.post_help)
 
     async def post_help(self, ctx: commands.Context):
