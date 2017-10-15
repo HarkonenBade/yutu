@@ -86,26 +86,18 @@ def _achieve(text: str, out: io.BytesIO):
     def draw_rect(x, y, w, h, fill):
         draw.rectangle([x, y, x + w - 1, y + h - 1], fill=fill)
 
-    draw_rect(4, 4, width - 8, height - 8, (33, 33, 33, 255))
-    for coords in [(8, 4, width - 16, 8),
-                   (4, 8, 8, 112),
-                   (width - 12, 8, 8, 112),
-                   (8, 116, width - 16, 8),
-                   (8, 8, 8, 8),
-                   (8, 112, 8, 8),
-                   (width - 16, 8, 8, 8),
-                   (width - 16, 112, 8, 8)]:
+    for coords in [(8, 0, width - 16, height),
+                   (4, 4, width - 8, height - 8),
+                   (0, 8, width, height - 16)]:
+        draw_rect(*coords, (0, 0, 0, 255))
+
+    for coords in [(8, 4, width - 16, height - 8),
+                   (4, 8, width - 8, height - 16)]:
         draw_rect(*coords, (85, 85, 85, 255))
 
-    for coords in [(8, 0, width - 16, 4),
-                   (8, 124, width - 16, 4),
-                   (0, 8, 4, 112),
-                   (width - 4, 8, 4, 112),
-                   (4, 4, 4, 4),
-                   (4, 120, 4, 4),
-                   (width - 8, 4, 4, 4),
-                   (width - 8, 120, 4, 4)]:
-        draw_rect(*coords, (0, 0, 0, 255))
+    for coords in [(12, 16, width - 24, height - 32),
+                   (16, 12, width - 32, height - 24)]:
+        draw_rect(*coords, (33, 33, 33, 255))
 
     img.alpha_composite(icon, (32, 32))
 
