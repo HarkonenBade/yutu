@@ -127,7 +127,7 @@ class Misc:
         numerals = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣', '8⃣', '9⃣', '🔟']
         options = []
         for n in numerals:
-            posts_to_del.append(await ctx.send("Please enter a poll option (max 10) or STOP to finish."))
+            posts_to_del.append(await ctx.send("Please enter a poll option (max 10) or \"STOP\" to finish."))
             try:
                 post = await ctx.bot.wait_for("message", check=check, timeout=600)
                 posts_to_del.append(post)
