@@ -113,7 +113,7 @@ class Misc:
         def check(msg):
             return msg.author == ctx.author and msg.channel == ctx.channel
 
-        posts_to_del = [await ctx.send("Please describe the poll topic.")]
+        posts_to_del = [ctx.message, await ctx.send("Please describe the poll topic.")]
 
         try:
             post = await ctx.bot.wait_for("message", check=check, timeout=600)
