@@ -44,7 +44,6 @@ class Games:
                 content.description += "You are out of coins.\n\n"
             else:
                 content.description += "You currently have **{}** coins.\n\n".format(player.coins)
-                print(player.coins)
             if finish:
                 content.description += "Thank you for playing!"
             else:
@@ -91,6 +90,4 @@ class Games:
                 gen_post(player, first, second, third, under_text=tag)
                 await post.edit(embed=content)
             gen_post(player, '❓', '❓', '❓', finish=True)
-            await post.edit(embed=content)
-            await asyncio.sleep(30)
-            await post.delete()
+            await post.edit(embed=content, delete_after=30)
