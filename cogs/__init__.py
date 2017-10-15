@@ -1,8 +1,11 @@
-from . import facts, fluffy_bunnies, interact, jukebox, management, draw, misc, shitposting, self_management, kali
-
+from . import (facts, fluffy_bunnies, interact,
+               jukebox, management, draw,
+               misc, shitposting, self_management,
+               kali, games)
 
 def setup(bot):
     bot.add_cog(facts.Facts(bot))
+    bot.add_cog(games.Games(bot))
     bot.add_cog(management.Manage())
     bot.add_cog(jukebox.Jukebox())
     bot.add_cog(interact.Interact())
