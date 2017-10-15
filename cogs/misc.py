@@ -148,7 +148,6 @@ class Misc:
             await vote.add_reaction(n)
 
     @commands.command()
-    @commands.cooldown(2, 3600, commands.BucketType.user)
     async def quote(self, ctx: commands.Context, user: discord.Member, *, identifier=None):
         """
         Quote a user.
