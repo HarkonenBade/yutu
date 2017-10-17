@@ -42,5 +42,4 @@ class Yutu(commands.Bot):
             await ctx.print_help()
         elif isinstance(exception, commands.CommandOnCooldown):
             await ctx.send(content=str(exception))
-        else:
-            await super().on_command_error(ctx, exception)
+        await super().on_command_error(ctx, exception)
