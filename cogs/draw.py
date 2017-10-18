@@ -87,10 +87,18 @@ class Draw:
 
 
 def _sword(text:str, out:io.BytesIO):
-    barb = ImageFont.truetype("./data/barbarian.ttf", 36)
-    lines = ["{})".format(s.lower().replace(" ", "_")) for s in text.split('\n')]
+    transformdict = {i: '' for i in range(256)}
+    for c in 'abcdefghijklmnopqrstuvwxyz ':
+        transformdict[ord(c)] = c
+    for c in '-_,.':
+        transformdict[ord(c)] = ' '
+    lines = text.split('\n')
+    lines = [s.lower().translate(transformdict) for s in lines]
+    lines = ["{})".format(s.replace(" ", "_")) for s in lines]
     lines = [s[0].upper() + s[1:] for s in lines]
     render_text = '\n'.join(lines)
+
+    barb = ImageFont.truetype("./data/barbarian.ttf", 36)
     sizer = ImageDraw.Draw(ImageFile.new('RGB', size=(1024, 1024)))
     size = sizer.multiline_textsize(render_text, barb)
     final_size = width, height = size[0]+50, size[1]+50
