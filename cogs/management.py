@@ -53,3 +53,9 @@ class Manage:
                  for pos, (usr, msgs) in enumerate(sorted(chat_log.items(),
                                                           key=lambda item: item[1],
                                                           reverse=True))])))
+
+    @commands.command(hidden=True)
+    @can_manage()
+    async def make_timeout(self, ctx: commands.Context):
+        timeout = discord.utils.find(lambda r: r.name == "timeout", ctx.guild.roles)
+        await ctx.channel.set_permissions(timeout, read_messages=False, send_messages=False)
