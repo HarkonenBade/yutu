@@ -68,6 +68,22 @@ class SelfManagement:
                 await ctx.author.add_roles(nwde, reason="Added by ~imlewd command.")
                 await ctx.send("Ok {0.mention}, Granting you access to #nwde and #dickposting".format(ctx.author))
 
+    @commands.command()
+    async def ventilateme(self, ctx: commands.Context):
+        """
+        Grants you access to the vent channel
+        """
+        if get(ctx.guild.roles, name="no vent") in ctx.author.roles:
+            await ctx.send("{0.mention}, you are not allowed to give yourself the vent role.".format(ctx.author))
+            return
+
+        vent = get(ctx.guild.roles, name="im venty")
+        if vent in ctx.author.roles:
+            await ctx.send("But {0.mention}, you have already been ventilated.".format(ctx.author))
+        else:
+            await ctx.author.add_roles(vent, reason="Added by ~ventilateme command.")
+            await ctx.send("Ok {0.mention}, Granting you access to #vent".format(ctx.author))
+
     @commands.command(aliases=['pronoun'])
     async def pronouns(self, ctx: commands.Context, *, pronouns):
         """
