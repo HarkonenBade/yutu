@@ -184,3 +184,13 @@ class Misc:
                                     quote=quote_text,
                                     source=quote_user)
         await ctx.send("Quoting {0.mention}:\n\"{1}\"".format(user, quote_text))
+
+    @commands.command(hidden=True)
+    async def gayformurph(self, ctx: commands.Context):
+        murph = ctx.bot.get_user(184073774822326273)
+        await ctx.send("{0.mention} is so very gay for {1.mention}.".format(ctx.author, murph))
+
+    @commands.command(hidden=True)
+    async def verygayformurph(self, ctx: commands.Context):
+        murph = ctx.bot.get_user(184073774822326273)
+        await ctx.send("Even if stranded on Themyscira, {0.mention} would swim the ocean to find {1.mention}.".format(ctx.author, murph))
