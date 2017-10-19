@@ -65,3 +65,14 @@ class ShitPosting:
         for src, dst in transforms.items():
             msg = msg.replace(src.lower(), dst)
         await ctx.send(content=msg)
+
+    @commands.command()
+    async def nb(self, ctx: commands.Context, *, msg):
+        """
+        Make a message more non-binary
+        """
+        msg = await commands.clean_content().convert(ctx, msg)
+        await ctx.send(content=msg.translate({ord('n'): 'nb',
+                                              ord('N'): 'NB',
+                                              ord('b'): 'nb',
+                                              ord('B'): 'NB'}))
