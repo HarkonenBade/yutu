@@ -162,23 +162,24 @@ class Misc:
         async for message in ctx.channel.history(limit=200, before=ctx.message):
             if message.author == user:
                 if identifier is not None:
-                    if identifier.lower() in message.content.lower():
-                        quote_text = await commands.clean_content().convert(ctx, message.content)
+                    if identifier.lower() in message.clean_content.lower():
+                        quote_text = message.clean_content
                         async for msg in ctx.channel.history(limit=100, after=message, reverse=True):
                             if msg.id == ctx.message.id or msg.author != user:
                                 break
-                            quote_text = quote_text + '\n' + await commands.clean_content().convert(ctx, msg.content)
+                            quote_text = quote_text + '\n' + msg.clean_content
                         break
                 else:
-                    quote_text = await commands.clean_content().convert(ctx, message.content)
+                    quote_text = message.clean_content
                     async for msg in ctx.channel.history(limit=100, before=message):
                         if msg.author != user:
                             break
-                        quote_text = await commands.clean_content().convert(ctx, msg.content) + '\n' + quote_text
+                        quote_text = msg.clean_content + '\n' + quote_text
                     break
         else:
             await ctx.send("I'm sorry, I can't find that.")
             return
+        print(quote_text)
         ctx.bot.tumblr.create_quote("scarlatinashenanigans.tumblr.com",
                                     state="draft",
                                     quote=quote_text,
