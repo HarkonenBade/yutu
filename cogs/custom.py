@@ -53,7 +53,7 @@ class CustomCommands:
             for cmd in orm.select(c for c in self.Command):
                 self.add_cmd(cmd)
 
-    async def get_str(self, ctx: commands.Context, preamble: str, check=lambda x: True, err=''):
+    async def get_str(self, ctx: commands.Context, preamble: str, check=lambda x: True, err='', clean=True):
         query = await ctx.send(preamble.format(ctx.author))
 
         def chk(msg):
@@ -65,7 +65,10 @@ class CustomCommands:
             if check(msg):
                 await query.delete()
                 await msg.delete()
-                return msg.clean_content
+                if clean:
+                    return msg.clean_content
+                else:
+                    return msg.content
             else:
                 await ctx.send(err.format(ctx.author))
 
@@ -106,7 +109,8 @@ class CustomCommands:
                                   "{{author.mention}} is the author's mention string. "
                                   "{{target}} is the target of the command if it is targetted. "
                                   "{{target.mention}} is the targets mention string. "
-                                  "{{channel}} is the channel the command is invoked in. ")
+                                  "{{channel}} is the channel the command is invoked in. ",
+                                  clean=False)
 
     @commands.command(name="new-custom-command", hidden=True)
     @has_roles_or_owner("mod", "owner")
