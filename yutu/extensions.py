@@ -29,7 +29,7 @@ discord.Member.__str__ = lambda self: self.display_name
 Pronouns = collections.namedtuple("Pronouns", ['subj', 'obj', 'dep_poss', 'indep_poss'])
 
 def pronouns(self):
-    if get(self.roles, name="they/them") is not None:
+    if get(self.roles, name="they/them") is not None or get(self.roles, name="they/she") is not None:
         return Pronouns('they', 'them', 'their', 'theirs')
     elif get(self.roles, name="he/him") is not None:
         return Pronouns('he', 'him', 'his', 'his')
@@ -37,6 +37,8 @@ def pronouns(self):
         return Pronouns('she', 'her', 'her', 'hers')
     elif get(self.roles, name="it/its") is not None:
         return Pronouns('it', 'it', 'its', 'its')
+    elif get(self.roles, name="shark/shark") is not None:
+        return Pronouns('shark', 'shark', 'sharks', 'sharks', 'sharkselves')
     return Pronouns('they', 'them', 'their', 'theirs')
 
 discord.Member.pronouns = pronouns

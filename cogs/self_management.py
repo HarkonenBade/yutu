@@ -90,12 +90,14 @@ class SelfManagement:
         Use to set your pronouns
         
         Enter any number of the following after the command, seperated by spaces:
-        he, she, they, it
+        he, she, they, it, shark, they/she
         """
         roles = {"he": get(ctx.guild.roles, name="he/him"),
                  "she": get(ctx.guild.roles, name="she/her"),
                  "they": get(ctx.guild.roles, name="they/them"),
-                 "it": get(ctx.guild.roles, name="it/its")}
+                 "it": get(ctx.guild.roles, name="it/its"),
+                 "shark": get(ctx.guild.roles, name="shark/shark"),
+                 "they/she": get(ctx.guild.roles, name="they/she")}
 
         try:
             roles_add = [roles[p] for p in pronouns.lower().split(" ")]
