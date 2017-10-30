@@ -38,7 +38,7 @@ def pronouns(self):
     elif get(self.roles, name="it/its") is not None:
         return Pronouns('it', 'it', 'its', 'its')
     elif get(self.roles, name="shark/shark") is not None:
-        return Pronouns('shark', 'shark', 'sharks', 'sharks', 'sharkselves')
+        return Pronouns('shark', 'shark', 'sharks', 'sharks')
     return Pronouns('they', 'them', 'their', 'theirs')
 
 discord.Member.pronouns = pronouns
