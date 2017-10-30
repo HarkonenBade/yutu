@@ -44,7 +44,7 @@ def pronouns(self):
         p.add(p_noun_map['she/her'])
     if not p:
         p = {p_noun_map['they/them']}
-    return random.choice(p)
+    return random.choice(list(p))
 
 discord.Member.pronouns = property(pronouns)
 
