@@ -1,4 +1,5 @@
 import collections
+import random
 
 import discord
 from discord.utils import get
@@ -28,20 +29,24 @@ discord.Member.__str__ = lambda self: self.display_name
 
 Pronouns = collections.namedtuple("Pronouns", ['subj', 'obj', 'dep_poss', 'indep_poss'])
 
-def pronouns(self):
-    if get(self.roles, name="they/them") is not None or get(self.roles, name="they/she") is not None:
-        return Pronouns('they', 'them', 'their', 'theirs')
-    elif get(self.roles, name="he/him") is not None:
-        return Pronouns('he', 'him', 'his', 'his')
-    elif get(self.roles, name="she/her") is not None:
-        return Pronouns('she', 'her', 'her', 'hers')
-    elif get(self.roles, name="it/its") is not None:
-        return Pronouns('it', 'it', 'its', 'its')
-    elif get(self.roles, name="shark/shark") is not None:
-        return Pronouns('shark', 'shark', 'sharks', 'sharks')
-    return Pronouns('they', 'them', 'their', 'theirs')
+p_noun_map = {
+    'they/them': Pronouns('they', 'them', 'their', 'theirs'),
+    'he/him': Pronouns('he', 'him', 'his', 'his'),
+    'she/her': Pronouns('she', 'her', 'her', 'hers'),
+    'it/its': Pronouns('it', 'it', 'its', 'its'),
+    'shark/shark': Pronouns('shark', 'shark', 'sharks', 'sharks')
+}
 
-discord.Member.pronouns = pronouns
+def pronouns(self):
+    p = {p_noun_map[role.name] for role in self.roles if role.name in p_noun_map}
+    if get(self.roles, name="they/she"):
+        p.add(p_noun_map['they/them'])
+        p.add(p_noun_map['she/her'])
+    if not p:
+        p = {p_noun_map['they/them']}
+    return random.choice(p)
+
+discord.Member.pronouns = property(pronouns)
 
 class DummyArg:
     def __init__(self, name):

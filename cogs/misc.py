@@ -97,13 +97,13 @@ class Misc:
         """
         Pay your respects
         """
-        await ctx.send(content="**{}** has paid {} respects {}".format(ctx.author,
-                                                                       ctx.author.pronouns().dep_poss,
-                                                                       random.choice([':heart:',
-                                                                                      ':yellow_heart:',
-                                                                                      ':blue_heart:',
-                                                                                      ':purple_heart:',
-                                                                                      ':green_heart:'])))
+        await ctx.send(content="**{0}** has paid {0.pronouns.dep_poss} respects {1}".format(
+            ctx.author,
+            random.choice([':heart:',
+                           ':yellow_heart:',
+                           ':blue_heart:',
+                           ':purple_heart:',
+                           ':green_heart:'])))
 
     @commands.command()
     async def poll(self, ctx: commands.Context):
