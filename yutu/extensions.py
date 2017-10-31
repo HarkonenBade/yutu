@@ -33,8 +33,7 @@ p_noun_map = {
     'they/them': Pronouns('they', 'them', 'their', 'theirs'),
     'he/him': Pronouns('he', 'him', 'his', 'his'),
     'she/her': Pronouns('she', 'her', 'her', 'hers'),
-    'it/its': Pronouns('it', 'it', 'its', 'its'),
-    'shark/shark': Pronouns('shark', 'shark', 'sharks', 'sharks')
+    'it/its': Pronouns('it', 'it', 'its', 'its')
 }
 
 def pronouns(self):
