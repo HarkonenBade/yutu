@@ -216,36 +216,32 @@ def _generate(top, bottom, background, output, width, height):
     max_font_size = int(image.size[1] / 5)
     min_font_size_single_line = int(image.size[1] / 12)
     max_text_len = image.size[0] - 20
-    top_font_size, top = _optimize_font_size(
-        font_path, top, max_font_size,
-        min_font_size_single_line, max_text_len,
-    )
-    bottom_font_size, bottom = _optimize_font_size(
-        font_path, bottom, max_font_size,
-        min_font_size_single_line, max_text_len,
-    )
-
-    top_font = ImageFont.truetype(font_path, top_font_size)
-    bottom_font = ImageFont.truetype(font_path, bottom_font_size)
-
-    top_text_size = draw.multiline_textsize(top, top_font)
-    bottom_text_size = draw.multiline_textsize(bottom, bottom_font)
-
-    # Find top centered position for top text
-    top_text_position_x = (image.size[0] / 2) - (top_text_size[0] / 2)
-    top_text_position_y = 0
-    top_text_position = (top_text_position_x, top_text_position_y)
-
-    # Find bottom centered position for bottom text
-    bottom_text_size_x = (image.size[0] / 2) - (bottom_text_size[0] / 2)
-    bottom_text_size_y = image.size[1] - bottom_text_size[1] * (7 / 6)
-    bottom_text_position = (bottom_text_size_x, bottom_text_size_y)
-
-    _draw_outlined_text(draw, top_text_position,
-                        top, top_font, top_font_size)
-    _draw_outlined_text(draw, bottom_text_position,
-                        bottom, bottom_font, bottom_font_size)
-
+    if top:
+        top_font_size, top = _optimize_font_size(
+            font_path, top, max_font_size,
+            min_font_size_single_line, max_text_len,
+        )
+        top_font = ImageFont.truetype(font_path, top_font_size)
+        top_text_size = draw.multiline_textsize(top, top_font)
+        # Find top centered position for top text
+        top_text_position_x = (image.size[0] / 2) - (top_text_size[0] / 2)
+        top_text_position_y = 0
+        top_text_position = (top_text_position_x, top_text_position_y)
+        _draw_outlined_text(draw, top_text_position,
+                            top, top_font, top_font_size)
+    if bottom:
+        bottom_font_size, bottom = _optimize_font_size(
+            font_path, bottom, max_font_size,
+            min_font_size_single_line, max_text_len,
+        )
+        bottom_font = ImageFont.truetype(font_path, bottom_font_size)
+        bottom_text_size = draw.multiline_textsize(bottom, bottom_font)
+        # Find bottom centered position for bottom text
+        bottom_text_size_x = (image.size[0] / 2) - (bottom_text_size[0] / 2)
+        bottom_text_size_y = image.size[1] - bottom_text_size[1] * (7 / 6)
+        bottom_text_position = (bottom_text_size_x, bottom_text_size_y)
+        _draw_outlined_text(draw, bottom_text_position,
+                            bottom, bottom_font, bottom_font_size)
     image.save(output, format="png")
 
 
