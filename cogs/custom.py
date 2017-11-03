@@ -16,6 +16,10 @@ def has_roles_or_owner(*roles):
     return commands.check(chk)
 
 
+class Custom:
+    pass
+
+
 class CustomCommands:
     Command = None
 
@@ -44,9 +48,9 @@ class CustomCommands:
                                                              channel=ctx.channel))
         if cmd.nsfw:
             cmd_body = commands.is_nsfw()(cmd_body)
-        self.bot.add_command(commands.command(hidden=True,
-                                              name=cmd.name,
-                                              help=cmd.help_text)(cmd_body))
+        cmd_obj = commands.command(name=cmd.name, help=cmd.help_text)(cmd_body)
+        cmd_obj.instance = Custom()
+        self.bot.add_command(cmd_obj)
 
     async def setup(self):
         with orm.db_session:
