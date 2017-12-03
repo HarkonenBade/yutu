@@ -41,6 +41,9 @@ def pronouns(self):
     if get(self.roles, name="they/she"):
         p.add(p_noun_map['they/them'])
         p.add(p_noun_map['she/her'])
+    if get(self.roles, name="they/he"):
+        p.add(p_noun_map['they/them'])
+        p.add(p_noun_map['he/him'])
     if not p:
         p = {p_noun_map['they/them']}
     return random.choice(list(p))
