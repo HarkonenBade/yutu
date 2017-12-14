@@ -5,24 +5,25 @@ from discord.utils import get
 from discord.ext import commands
 
 class ShitPosting:
+    @staticmethod
+    async def clapcore(ctx, msg, clapper):
+        msg = await commands.clean_content().convert(ctx, msg)
+        await ctx.send(content="\n".join(["{} " + " {} ".join(line.split(" ")) + " {}"
+                                          for line in msg.split('\n')]).format(clapper))
+
     @commands.command()
     async def clap(self, ctx: commands.Context, *, msg):
         """
         :clap: your :clap: message :clap: here :clap:
         """
-        msg = await commands.clean_content().convert(ctx, msg)
-        await ctx.send(content="\n".join([":clap: " + " :clap: ".join(line.split(" ")) + " :clap:"
-                                          for line in msg.split('\n')]))
+        await self.clapcore(ctx, msg, ":clap:")
 
     @commands.command()
     async def obamaclap(self, ctx: commands.Context, *, msg):
         """
         :perish: your :perish: message :perish: here :perish:
         """
-        perish = get(ctx.guild.emojis, name='perish')
-        msg = await commands.clean_content().convert(ctx, msg)
-        await ctx.send(content="\n".join([("{0} " + " {0} ".join(line.split(" ")) + " {0}").format(perish)
-                                          for line in msg.split('\n')]))
+        await self.clapcore(ctx, msg, get(ctx.guild.emojis, name='perish'))
 
     @commands.command()
     async def bunclap(self, ctx: commands.Context, *, msg):
@@ -33,13 +34,10 @@ class ShitPosting:
             bun_list = [get(ctx.guild.emojis, name='peekabun'),
                         get(ctx.guild.emojis, name='peekafrappbun'),
                         get(ctx.guild.emojis, name='peekacarnagebun')]
-            def __getattr__(self, item):
-                return random.choice(self.bun_list)
+            def __str__(self):
+                return str(random.choice(self.bun_list))
 
-        msg = await commands.clean_content().convert(ctx, msg)
-        text = "\n".join(["{0.bun} " + " {0.bun} ".join(line.split(" ")) + " {0.bun}"
-                          for line in msg.split('\n')]).format(BunGen())
-        await (await ctx.send(text)).edit()
+        await self.clapcore(ctx, msg, BunGen())
 
 
     @commands.command()
