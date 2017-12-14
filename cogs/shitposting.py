@@ -8,7 +8,7 @@ class ShitPosting:
     @staticmethod
     async def clapcore(ctx, msg, clapper):
         msg = await commands.clean_content().convert(ctx, msg)
-        await ctx.send(content="\n".join(["{} " + " {} ".join(line.split(" ")) + " {}"
+        await ctx.send(content="\n".join(["{0} " + " {0} ".join(line.split(" ")) + " {0}"
                                           for line in msg.split('\n')]).format(clapper))
 
     @commands.command()
