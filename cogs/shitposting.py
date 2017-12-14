@@ -15,6 +15,15 @@ class ShitPosting:
                                           for line in msg.split('\n')]))
 
     @commands.command()
+    async def obamaclap(self, ctx: commands.Context, *, msg):
+        """
+        :perish: your :perish: message :perish: here :perish:
+        """
+        msg = await commands.clean_content().convert(ctx, msg)
+        await ctx.send(content="\n".join([":perish: " + " :perish: ".join(line.split(" ")) + " :perish:"
+                                          for line in msg.split('\n')]))
+
+    @commands.command()
     async def bunclap(self, ctx: commands.Context, *, msg):
         """
         :bun: your :bun: message :bun: here :bun:
