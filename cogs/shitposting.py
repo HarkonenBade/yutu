@@ -21,8 +21,8 @@ class ShitPosting:
         """
         perish = get(ctx.guild.emojis, name='perish')
         msg = await commands.clean_content().convert(ctx, msg)
-        await ctx.send(content="\n".join(["{0} " + " {0} ".join(line.split(" ")) + " {0}"
-                                          for line in msg.split('\n')])).format(perish)
+        await ctx.send(content="\n".join([("{0} " + " {0} ".join(line.split(" ")) + " {0}").format(perish)
+                                          for line in msg.split('\n')]))
 
     @commands.command()
     async def bunclap(self, ctx: commands.Context, *, msg):
