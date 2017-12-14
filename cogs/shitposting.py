@@ -19,6 +19,20 @@ class ShitPosting:
         await self.clapcore(ctx, msg, ":clap:")
 
     @commands.command()
+    async def clpa(self, ctx: commands.Context, *, msg):
+        """
+        :clpa: your :clpa: message :clpa: here :clpa:
+        """
+        await self.clapcore(ctx, msg, get(ctx.guild.emojis, name='clpa'))
+
+    @commands.command()
+    async def boof(self, ctx: commands.Context, *, msg):
+        """
+        :boof: your :boof: message :boof: here :boof:
+        """
+        await self.clapcore(ctx, msg, get(ctx.guild.emojis, name='boof'))
+
+    @commands.command()
     async def obamaclap(self, ctx: commands.Context, *, msg):
         """
         :perish: your :perish: message :perish: here :perish:
