@@ -1,9 +1,15 @@
 import asyncio
+import datetime
 import hashlib
 import random
+import re
 
 import discord
 from discord.ext import commands
+
+import ao3
+
+import html2text
 
 
 class Misc:
@@ -195,3 +201,57 @@ class Misc:
     async def verygayformurph(self, ctx: commands.Context):
         murph = ctx.bot.get_user(184073774822326273)
         await ctx.send("Even if stranded on Themyscira, {0.mention} would swim the ocean to find {1.mention}.".format(ctx.author, murph))
+
+    @commands.command()
+    async def ao3(self, ctx: commands.Context, msg: str):
+        """
+        Attach a preview of an Ao3 Work
+        """
+        try:
+            wid = int(msg)
+        except ValueError:
+            mtch = re.match("^https?://(?:www.)?archiveofourown.org/works/(\d*).*$", msg)
+            if mtch is None:
+                await ctx.send("Error: Please provide either a workID or a URL")
+                return
+            wid = int(mtch.group(1))
+        async with ctx.typing():
+            api = ao3.AO3()
+            try:
+                work = api.work(id=wid)
+            except:
+                await ctx.send("Error: Can't find a work with that ID/URL")
+                return
+            try:
+                kudos = work.kudos
+            except:
+                kudos = 0
+            disp = discord.Embed()
+            disp.title = work.title
+            disp.url = work.url
+            disp.colour = 9437184
+            disp.timestamp = datetime.datetime.combine(work.published, datetime.time())
+            disp.description = """
+by {}
+
+**Rating**: {}
+**Archive Warnings**: {}
+**Category**: {}
+**Fandom**: {}
+**Relationships**: {}
+**Characters**: {}
+**Language**: {}
+**Stats**: Words: {} Hits: {} Kudos: {}
+
+{}
+            """.format(work.author,
+                       ", ".join(work.rating),
+                       "No Archive Warnings Apply" if not work.warnings else ", ".join(work.warnings),
+                       ", ".join(work.category),
+                       ", ".join(work.fandoms),
+                       ", ".join(work.relationship),
+                       ", ".join(work.characters),
+                       work.language,
+                       work.words, work.hits, kudos,
+                       html2text.html2text(work.summary))
+            await ctx.send(embed=disp)

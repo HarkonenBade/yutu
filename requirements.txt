@@ -7,3 +7,5 @@ pony
 psycopg2
 agithub
 pytumblr
+ao3
+html2text
