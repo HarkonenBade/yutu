@@ -7,5 +7,5 @@ pony
 psycopg2
 agithub
 pytumblr
-ao3
+-e git+https://github.com/HarkonenBade/ao3.git@read-chapters#egg=ao3
 html2text

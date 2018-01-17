@@ -207,12 +207,6 @@ class Misc:
         """
         Attach a preview of an Ao3 Work
         """
-        def get(wrk, attr, default):
-            try:
-                return getattr(wrk, attr)
-            except AttributeError:
-                return default
-
         try:
             wid = int(msg)
         except ValueError:
@@ -247,13 +241,13 @@ by {}
 
 {}
             """.format(work.author,
-                       ", ".join(get(work, "rating", [])),
-                       "No Archive Warnings Apply" if not get(work, "warnings", []) else ", ".join(get(work, "warnings", [])),
-                       ", ".join(get(work, "category", [])),
-                       ", ".join(get(work, "fandoms", [])),
-                       ", ".join(get(work, "relationship", [])),
-                       ", ".join(get(work, "characters", [])),
-                       get(work, "language", ""),
-                       get(work, "words", 0), get(work, "hits", 0), get(work, "kudos", 0),
-                       html2text.html2text(get(work, "summary", "")))
+                       ", ".join(work.rating),
+                       "No Archive Warnings Apply" if not work.warnings else ", ".join(work.warnings),
+                       ", ".join(work.category),
+                       ", ".join(work.fandoms),
+                       ", ".join(work.relationship),
+                       ", ".join(work.characters),
+                       work.language,
+                       work.words, work.hits, work.kudos,
+                       html2text.html2text(work.summary))
             await ctx.send(embed=disp)
