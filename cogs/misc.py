@@ -237,7 +237,7 @@ by {}
 **Relationships**: {}
 **Characters**: {}
 **Language**: {}
-**Stats**: Words: {} Hits: {} Kudos: {}
+**Stats**: Words: {} Hits: {} Kudos: {} Chapters: {}/{}
 
 {}
             """.format(work.author,
@@ -249,5 +249,6 @@ by {}
                        ", ".join(work.characters),
                        work.language,
                        work.words, work.hits, work.kudos,
+                       work.published_chapters, "?" if work.total_chapters is None else work.total_chapters,
                        html2text.html2text(work.summary))
             await ctx.send(embed=disp)
