@@ -3,6 +3,7 @@ import datetime
 import hashlib
 import random
 import re
+import urllib.parse
 
 import discord
 from discord.ext import commands
@@ -208,8 +209,12 @@ class Misc:
         Attach a preview of an Ao3 Work
         """
 
+        def make_link(elm):
+            return "[{}]({})".format(elm,
+                                     elm.url.replace("(", "%28").replace(")", "%29"))
+
         def make_links(lst):
-            return ["[{0}]({0.url})".format(elm) for elm in lst]
+            return [make_link(elm) for elm in lst]
 
         def make_str(lst):
             return [str(elm) for elm in lst]
@@ -235,19 +240,19 @@ class Misc:
             disp.colour = 9437184
             disp.timestamp = datetime.datetime.combine(work.published, datetime.time())
             disp.description = """
-by [{0}]({0.url})
+by {}
 
-**Rating**: {1}
-**Archive Warnings**: {2}
-**Category**: {3}
-**Fandom**: {4}
-**Relationships**: {5}
-**Characters**: {6}
-**Language**: {7}
-**Stats**: Words: {8} Hits: {9} Kudos: {10} Chapters: {11}/{12}
+**Rating**: {}
+**Archive Warnings**: {}
+**Category**: {}
+**Fandom**: {}
+**Relationships**: {}
+**Characters**: {}
+**Language**: {}{}
+**Stats**: Words: {} Hits: {} Kudos: {} Chapters: {}/{}
 
-{13}
-            """.format(work.author,
+{}
+            """.format(make_link(work.author),
                        ", ".join(make_str(work.rating)),
                        "No Archive Warnings Apply" if not work.warnings else ", ".join(make_str(work.warnings)),
                        ", ".join(make_str(work.category)),
@@ -255,6 +260,8 @@ by [{0}]({0.url})
                        ", ".join(make_links(work.relationship)),
                        ", ".join(make_links(work.characters)),
                        work.language,
+                       "" if work.series is None else "\n**Series**: Part {} of {}".format(work.series_idx,
+                                                                                           make_link(work.series)),
                        work.words, work.hits, work.kudos,
                        work.published_chapters, "?" if work.total_chapters is None else work.total_chapters,
                        html2text.html2text(work.summary))
