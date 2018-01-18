@@ -207,6 +207,13 @@ class Misc:
         """
         Attach a preview of an Ao3 Work
         """
+
+        def make_links(lst):
+            return ["[{0}]({0.url})".format(elm) for elm in lst]
+
+        def make_str(lst):
+            return [str(elm) for elm in lst]
+
         try:
             wid = int(msg)
         except ValueError:
@@ -228,25 +235,25 @@ class Misc:
             disp.colour = 9437184
             disp.timestamp = datetime.datetime.combine(work.published, datetime.time())
             disp.description = """
-by {}
+by [{0}]({0.url})
 
-**Rating**: {}
-**Archive Warnings**: {}
-**Category**: {}
-**Fandom**: {}
-**Relationships**: {}
-**Characters**: {}
-**Language**: {}
-**Stats**: Words: {} Hits: {} Kudos: {} Chapters: {}/{}
+**Rating**: {1}
+**Archive Warnings**: {2}
+**Category**: {3}
+**Fandom**: {4}
+**Relationships**: {5}
+**Characters**: {6}
+**Language**: {7}
+**Stats**: Words: {8} Hits: {9} Kudos: {10} Chapters: {11}/{12}
 
-{}
+{13}
             """.format(work.author,
-                       ", ".join(work.rating),
-                       "No Archive Warnings Apply" if not work.warnings else ", ".join(work.warnings),
-                       ", ".join(work.category),
-                       ", ".join(work.fandoms),
-                       ", ".join(work.relationship),
-                       ", ".join(work.characters),
+                       ", ".join(make_str(work.rating)),
+                       "No Archive Warnings Apply" if not work.warnings else ", ".join(make_str(work.warnings)),
+                       ", ".join(make_str(work.category)),
+                       ", ".join(make_links(work.fandoms)),
+                       ", ".join(make_links(work.relationship)),
+                       ", ".join(make_links(work.characters)),
                        work.language,
                        work.words, work.hits, work.kudos,
                        work.published_chapters, "?" if work.total_chapters is None else work.total_chapters,
