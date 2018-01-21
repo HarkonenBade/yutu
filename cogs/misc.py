@@ -204,14 +204,10 @@ class Misc:
         murph = ctx.bot.get_user(184073774822326273)
         await ctx.send("Even if stranded on Themyscira, {0.mention} would swim the ocean to find {1.mention}.".format(ctx.author, murph))
 
-    def format_ao3(self, work, with_links=True):
-        if with_links:
-            def make_link(elm):
-                return "[{}]({})".format(elm,
-                                         elm.url.replace("(", "%28").replace(")", "%29"))
-        else:
-            def make_link(elm):
-                return str(elm)
+    def format_ao3(self, work):
+        def make_link(elm):
+            return "[{}]({})".format(elm,
+                                     elm.url.replace("(", "%28").replace(")", "%29"))
 
         def make_str(lst):
             return [str(elm) for elm in lst]
@@ -231,12 +227,6 @@ class Misc:
         infodict["Category"] = ", ".join(make_str(work.category))
         if work.fandoms:
             infodict['Fandom'] = ", ".join(make_links(work.fandoms))
-        if work.relationship:
-            infodict['Relationships'] = ", ".join(make_links(work.relationship))
-        if work.characters:
-            infodict['Characters'] = ", ".join(make_links(work.characters))
-        if work.additional_tags:
-            infodict['Additional Tags'] = ", ".join(make_links(work.additional_tags))
         infodict['Language'] = work.language
         if work.series:
             infodict['Series'] = "Part {} of {}".format(work.series_idx, make_link(work.series))
@@ -250,9 +240,23 @@ class Misc:
         info = "\n".join(["**{}**: {}".format(k, v)
                           for k, v
                           in infodict.items()])
-        disp.description = """by {}\n\n{}\n\n{}""".format(make_link(work.author),
-                                                          info,
-                                                          html2text.html2text(work.summary))
+        disp.description = """by {}\n\n{}""".format(make_link(work.author),
+                                                    info)
+        if work.relationship:
+            disp.add_field(name="Relationships",
+                           value=", ".join(make_links(work.relationship)),
+                           inline=False)
+        if work.characters:
+            disp.add_field(name="Characters",
+                           value=", ".join(make_links(work.characters)),
+                           inline=False)
+        if work.additional_tags:
+            disp.add_field(name="Additional Tags",
+                           value=", ".join(make_links(work.additional_tags)),
+                           inline=False)
+        disp.add_field(name="Description",
+                       value=html2text.html2text(work.summary),
+                       inline=False)
         return disp
 
     @commands.command()
@@ -278,8 +282,4 @@ class Misc:
                 await ctx.send("Error: Can't find a work with that ID/URL")
                 return
             disp = self.format_ao3(work)
-            if len(disp.description) > 2048:
-                disp = self.format_ao3(work, with_links=False)
-                if len(disp.description) > 2048:
-                    disp.description = disp.description[:2045] + "..."
             await ctx.send(embed=disp)
