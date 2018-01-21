@@ -1,4 +1,5 @@
 import asyncio
+import collections
 import datetime
 import hashlib
 import random
@@ -203,21 +204,63 @@ class Misc:
         murph = ctx.bot.get_user(184073774822326273)
         await ctx.send("Even if stranded on Themyscira, {0.mention} would swim the ocean to find {1.mention}.".format(ctx.author, murph))
 
+    def format_ao3(self, work, with_links=True):
+        if with_links:
+            def make_link(elm):
+                return "[{}]({})".format(elm,
+                                         elm.url.replace("(", "%28").replace(")", "%29"))
+        else:
+            def make_link(elm):
+                return str(elm)
+
+        def make_str(lst):
+            return [str(elm) for elm in lst]
+
+        def make_links(lst):
+            return [make_link(elm) for elm in lst]
+
+        disp = discord.Embed()
+        disp.title = work.title
+        disp.url = work.url
+        disp.colour = 9437184
+        disp.timestamp = datetime.datetime.combine(work.published, datetime.time())
+        infodict = collections.OrderedDict()
+        infodict["Rating"] = ", ".join(make_str(work.rating))
+        infodict["Archive Warnings"] = "No Archive Warnings Apply" if not work.warnings else ", ".join(
+            make_str(work.warnings))
+        infodict["Category"] = ", ".join(make_str(work.category))
+        if work.fandoms:
+            infodict['Fandom'] = ", ".join(make_links(work.fandoms))
+        if work.relationship:
+            infodict['Relationships'] = ", ".join(make_links(work.relationship))
+        if work.characters:
+            infodict['Characters'] = ", ".join(make_links(work.characters))
+        if work.additional_tags:
+            infodict['Additional Tags'] = ", ".join(make_links(work.additional_tags))
+        infodict['Language'] = work.language
+        if work.series:
+            infodict['Series'] = "Part {} of {}".format(work.series_idx, make_link(work.series))
+        infodict['Stats'] = "Words: {} Hits: {} Kudos: {} Chapters: {}/{}".format(work.words,
+                                                                                  work.hits,
+                                                                                  work.kudos,
+                                                                                  work.published_chapters,
+                                                                                  "?"
+                                                                                  if work.total_chapters is None else
+                                                                                  work.total_chapters)
+        info = "\n".join(["**{}**: {}".format(k, v)
+                          for k, v
+                          in infodict.items()])
+        disp.description = """by {}\n\n{}\n\n{}""".format(make_link(work.author),
+                                                          info,
+                                                          html2text.html2text(work.summary))
+        return disp
+
     @commands.command()
     async def ao3(self, ctx: commands.Context, msg: str):
         """
         Attach a preview of an Ao3 Work
         """
 
-        def make_link(elm):
-            return "[{}]({})".format(elm,
-                                     elm.url.replace("(", "%28").replace(")", "%29"))
-
-        def make_links(lst):
-            return [make_link(elm) for elm in lst]
-
-        def make_str(lst):
-            return [str(elm) for elm in lst]
 
         try:
             wid = int(msg)
@@ -234,35 +277,9 @@ class Misc:
             except:
                 await ctx.send("Error: Can't find a work with that ID/URL")
                 return
-            disp = discord.Embed()
-            disp.title = work.title
-            disp.url = work.url
-            disp.colour = 9437184
-            disp.timestamp = datetime.datetime.combine(work.published, datetime.time())
-            disp.description = """
-by {}
-
-**Rating**: {}
-**Archive Warnings**: {}
-**Category**: {}
-**Fandom**: {}
-**Relationships**: {}
-**Characters**: {}
-**Language**: {}{}
-**Stats**: Words: {} Hits: {} Kudos: {} Chapters: {}/{}
-
-{}
-            """.format(make_link(work.author),
-                       ", ".join(make_str(work.rating)),
-                       "No Archive Warnings Apply" if not work.warnings else ", ".join(make_str(work.warnings)),
-                       ", ".join(make_str(work.category)),
-                       ", ".join(make_links(work.fandoms)),
-                       ", ".join(make_links(work.relationship)),
-                       ", ".join(make_links(work.characters)),
-                       work.language,
-                       "" if work.series is None else "\n**Series**: Part {} of {}".format(work.series_idx,
-                                                                                           make_link(work.series)),
-                       work.words, work.hits, work.kudos,
-                       work.published_chapters, "?" if work.total_chapters is None else work.total_chapters,
-                       html2text.html2text(work.summary))
+            disp = self.format_ao3(work)
+            if len(disp.description) > 2048:
+                disp = self.format_ao3(work, with_links=False)
+                if len(disp.description) > 2048:
+                    disp.description = disp.description[:2045] + "..."
             await ctx.send(embed=disp)
