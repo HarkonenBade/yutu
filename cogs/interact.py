@@ -66,7 +66,7 @@ interact_fwrk(name='cuddle',
 interact_fwrk(name='noogie',
               text='**{0}** gives **{1}** a noogie',
               help='Give someone a noogie',
-              images=['https://imgur.com/a/uBOvN'],
+              images=['https://media.giphy.com/media/MdmRuAvv1sQpi/giphy.gif'],
               disallow_none=True)
 
 interact_fwrk(name='siton',
