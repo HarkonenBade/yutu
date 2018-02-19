@@ -40,6 +40,20 @@ class ShitPosting:
         await self.clapcore(ctx, msg, get(ctx.guild.emojis, name='perish'))
 
     @commands.command()
+    async def lewdclap(self, ctx: commands.Context, * , msg):
+        """
+        Clap a lewd message
+        """
+        await self.clapcore(ctx, msg, get(ctx.guild.emojis, name='lewd'))
+
+    @commands.command()
+    async def blushclap(self, ctx: commands.Context, * , msg):
+        """
+        Velv is embarrised about your message
+        """
+        await self.clapcore(ctx, msg, get(ctx.guild.emojis, name='bunblush'))
+
+    @commands.command()
     async def bunclap(self, ctx: commands.Context, *, msg):
         """
         :bun: your :bun: message :bun: here :bun:
