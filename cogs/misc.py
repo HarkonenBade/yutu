@@ -242,20 +242,47 @@ class Misc:
                           in infodict.items()])
         disp.description = """by {}\n\n{}""".format(make_link(work.author),
                                                     info)
+        total_len = len(disp.description)
         if work.relationship:
+            val = ", ".join(make_links(work.relationship))
+            if len(val) > 1024:
+                val = ", ".join(make_str(work.relationship))
+            if len(val) > 1024:
+                val = val[:1021] + "..."
+            total_len += len(val)
             disp.add_field(name="Relationships",
-                           value=", ".join(make_links(work.relationship)),
+                           value=val,
                            inline=False)
         if work.characters:
+            val = ", ".join(make_links(work.characters))
+            if len(val) > 1024:
+                val = ", ".join(make_str(work.characters))
+            if len(val) > 1024:
+                val = val[:1021] + "..."
+            total_len += len(val)
             disp.add_field(name="Characters",
-                           value=", ".join(make_links(work.characters)),
+                           value=val,
                            inline=False)
         if work.additional_tags:
+            val = ", ".join(make_links(work.additional_tags))
+            if len(val) > 1024:
+                val = ", ".join(make_str(work.additional_tags))
+            if len(val) > 1024:
+                val = val[:1021] + "..."
+            total_len += len(val)
             disp.add_field(name="Additional Tags",
-                           value=", ".join(make_links(work.additional_tags)),
+                           value=val,
                            inline=False)
+        val = html2text.html2text(work.summary)
+        if len(val) > 1024:
+            val = val[:1021] + "..."
+        if total_len + len(val) > 6000:
+            if total_len < 5997:
+                val = val[:5997-total_len] + "..."
+            else:
+                return discord.Embed(description=":( I tried but that fic has too much info.")
         disp.add_field(name="Description",
-                       value=html2text.html2text(work.summary),
+                       value=val,
                        inline=False)
         return disp
 
