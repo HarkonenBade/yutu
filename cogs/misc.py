@@ -310,3 +310,18 @@ class Misc:
                 return
             disp = self.format_ao3(work)
             await ctx.send(embed=disp)
+
+    @commands.command()
+    async def ctof(self, ctx: commands.Context, temp: float):
+        """
+        Convert celcius to farenheit
+        """
+        await ctx.send(content="{:0.2f}C == {:0.2f}F".format(temp, temp*1.8 + 32))
+
+
+    @commands.command()
+    async def ftoc(self, ctx: commands.Context, temp: float):
+        """
+        Convert farenheit to celcius
+        """
+        await ctx.send(content="{:0.2f}F == {:0.2f}C".format(temp, ((temp - 32)*5)/9))
