@@ -84,6 +84,18 @@ class SelfManagement:
             await ctx.author.add_roles(vent, reason="Added by ~ventilateme command.")
             await ctx.send("Ok {0.mention}, Granting you access to #vent".format(ctx.author))
 
+    @commands.command()
+    async def gethistorical(self, ctx: commands.Context):
+        """
+        Grants you access to the #histcourse channel
+        """
+        hist = get(ctx.guild.roles, name="history buff")
+        if hist in ctx.author.roles:
+            await ctx.send("But {0.mention}, you are already historical.".format(ctx.author))
+        else:
+            await ctx.author.add_roles(hist, reason="Added by ~gethistorical command.")
+            await ctx.send("Ok {0.mention}, Granting you access to #histcourse".format(ctx.author))
+
     @commands.command(aliases=['pronoun'])
     async def pronouns(self, ctx: commands.Context, *, pronouns):
         """
