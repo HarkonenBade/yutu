@@ -24,14 +24,16 @@ class Games:
         """
         Take a roll of the slots
         """
-        slots = [get(ctx.guild.emojis, name='Rubes'),
-                 get(ctx.guild.emojis, name='weissu'),
-                 get(ctx.guild.emojis, name='cutedragon'),
-                 get(ctx.guild.emojis, name='bestcat'),
-                 get(ctx.guild.emojis, name='pyrrhicvictor'),
-                 get(ctx.guild.emojis, name='yellowboye'),
-                 get(ctx.guild.emojis, name='anorable'),
-                 get(ctx.guild.emojis, name='aintLieing')]
+        slots = [get(ctx.guild.emojis, name='roobs'),
+                 get(ctx.guild.emojis, name='wess'),
+                 get(ctx.guild.emojis, name='yeng'),
+                 get(ctx.guild.emojis, name='blek'),
+                 get(ctx.guild.emojis, name='pyrr'),
+                 get(ctx.guild.emojis, name='noodle'),
+                 get(ctx.guild.emojis, name='nora'),
+                 get(ctx.guild.emojis, name='renbo'),
+                 get(ctx.guild.emojis, name='hapbun'),
+                 get(ctx.guild.emojis, name='hapshork')]
 
         content = discord.Embed()
 
@@ -80,11 +82,11 @@ class Games:
                 first, second, third = random.choice(slots), random.choice(slots), random.choice(slots)
 
                 if first == second == third:
-                    player.coins += 64
-                    tag = ":trophy: Jackpot! :trophy:\nYou win 64 coins!"
+                    player.coins += 20
+                    tag = ":trophy: Jackpot! :trophy:\nYou win 20 coins!"
                 elif first == second or first == third or second == third:
-                    player.coins += 8
-                    tag = "You win 8 coins!"
+                    player.coins += 5
+                    tag = "You win 5 coins!"
                 else:
                     tag = "Better luck next time."
                 gen_post(player, first, second, third, under_text=tag)
