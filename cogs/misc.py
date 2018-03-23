@@ -240,7 +240,7 @@ class Misc:
         info = "\n".join(["**{}**: {}".format(k, v)
                           for k, v
                           in infodict.items()])
-        disp.description = """by {}\n\n{}""".format(make_link(work.author),
+        disp.description = """by {}\n\n{}""".format(", ".join(make_links(work.authors)),
                                                     info)
         total_len = len(disp.description)
         if work.relationship:
