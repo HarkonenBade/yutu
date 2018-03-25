@@ -33,7 +33,9 @@ class Games:
                  get(ctx.guild.emojis, name='nora'),
                  get(ctx.guild.emojis, name='renbo'),
                  get(ctx.guild.emojis, name='hapbun'),
-                 get(ctx.guild.emojis, name='hapshork')]
+                 get(ctx.guild.emojis, name='hapshork'),
+                 get(ctx.guild.emojis, name='skatergorl'),
+                 get(ctx.guild.emojis, name='rainbowgorl')]
 
         content = discord.Embed()
 
