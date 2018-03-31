@@ -29,11 +29,22 @@ discord.Member.__str__ = lambda self: self.display_name
 
 Pronouns = collections.namedtuple("Pronouns", ['subj', 'obj', 'dep_poss', 'indep_poss'])
 
+class s:
+    def __init__(self, v):
+        self.inner = v
+
+    def __str__(self):
+        return self.inner
+
+    @property
+    def cap(self):
+        return self.inner.capitalize()
+
 p_noun_map = {
-    'they/them': Pronouns('they', 'them', 'their', 'theirs'),
-    'he/him': Pronouns('he', 'him', 'his', 'his'),
-    'she/her': Pronouns('she', 'her', 'her', 'hers'),
-    'it/its': Pronouns('it', 'it', 'its', 'its')
+    'they/them': Pronouns(s('they'), s('them'), s('their'), s('theirs')),
+    'he/him': Pronouns(s('he'), s('him'), s('his'), s('his')),
+    'she/her': Pronouns(s('she'), s('her'), s('her'), s('hers')),
+    'it/its': Pronouns(s('it'), s('it'), s('its'), s('its'))
 }
 
 def pronouns(self):
