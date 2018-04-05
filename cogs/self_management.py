@@ -106,17 +106,21 @@ class selfmanagement:
         """
         if not hasattr(self.pronouns, "roles"):
             self.pronouns.roles = {"he": get(ctx.guild.roles, name="he/him"),
+                                   "he/him": get(ctx.guild.roles, name="he/him"),
                                    "she": get(ctx.guild.roles, name="she/her"),
+                                   "she/her": get(ctx.guild.roles, name="she/her"),
                                    "they": get(ctx.guild.roles, name="they/them"),
+                                   "they/them": get(ctx.guild.roles, name="they/them"),
                                    "it": get(ctx.guild.roles, name="it/its"),
+                                   "it/its": get(ctx.guild.roles, name="it/its"),
                                    "they/she": get(ctx.guild.roles, name="they/she"),
                                    "they/he": get(ctx.guild.roles, name="they/he")}
 
         try:
-            roles_add = [self.pronouns.roles[p] for p in pronouns.lower().split(" ")]
+            roles_add = {self.pronouns.roles[p] for p in pronouns.lower().split(" ")}
         except KeyError:
             raise commands.BadArgument()
-        roles_remove = list(set(self.pronouns.roles.values())-set(roles_add))
-        await ctx.author.add_roles(*roles_add)
-        await ctx.author.remove_roles(*roles_remove)
+        roles_remove = set(self.pronouns.roles.values())-roles_add
+        await ctx.author.add_roles(*list(roles_add))
+        await ctx.author.remove_roles(*list(roles_remove))
         await ctx.send("Ok {0.mention}, I have updated your pronoun roles.".format(ctx.author))
