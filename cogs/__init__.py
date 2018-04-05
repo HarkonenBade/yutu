@@ -14,5 +14,5 @@ def setup(bot):
     bot.add_cog(misc.Misc())
     bot.add_cog(fluffy_bunnies.SoulPact())
     bot.add_cog(shitposting.ShitPosting())
-    bot.add_cog(self_management.SelfManagement())
+    bot.add_cog(self_management.selfmanagement())
     bot.add_cog(kali.KaliCommands())
