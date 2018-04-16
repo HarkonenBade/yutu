@@ -1,6 +1,7 @@
 import requests
 import requests.exceptions
 import io
+import re
 
 from PIL import Image as ImageFile, ImageFont, ImageDraw
 
@@ -84,6 +85,45 @@ class Draw:
             await ctx.send(content="Swording by {0.mention}".format(ctx.author),
                            file=discord.File(tmp, filename="sword.png"))
             await ctx.message.delete()
+
+    @commands.command()
+    async def bonyornic(self, ctx: commands.Context, *, msg):
+        """
+        RUNES
+        """
+        async with ctx.typing():
+            tmp = io.BytesIO()
+            msg_text = await commands.clean_content().convert(ctx, msg)
+            (await _agen(ctx.bot.loop, _bonyorn, msg_text, tmp))
+            tmp.seek(0)
+            await ctx.send(content="Runes by {0.mention}".format(ctx.author),
+                           file=discord.File(tmp, filename="runes.png"))
+            await ctx.message.delete()
+
+
+def _bonyorn(text:str, out:io.BytesIO):
+    render_text = re.sub('[^A-Z\n ]', '', text.upper())
+
+    by = ImageFont.truetype("./data/bonyornic.ttf", 36)
+    sizer = ImageDraw.Draw(ImageFile.new('RGB', size=(1024, 1024)))
+    size = sizer.multiline_textsize(render_text, by)
+    final_size = width, height = size[0]+50, size[1]+50
+    render = ImageFile.new("RGBA", size=final_size, color=(0, 0, 0, 0))
+    draw = ImageDraw.Draw(render)
+    def draw_rect(x, y, w, h, fill):
+        draw.rectangle([x, y, x + w - 1, y + h - 1], fill=fill)
+
+    for coords in [(10, 0, width - 20, height),
+                   (5, 5, width - 10, height - 10),
+                   (0, 10, width, height - 20)]:
+        draw_rect(*coords, (0, 0, 0, 255))
+
+    for coords in [(10, 5, width - 20, height - 10),
+                   (5, 10, width - 10, height - 20)]:
+        draw_rect(*coords, (255, 255, 255, 255))
+
+    draw.multiline_text((25, 25), render_text, fill=(33, 33, 33), font=by, align="center")
+    render.save(out, format="png")
 
 
 def _sword(text:str, out:io.BytesIO):
