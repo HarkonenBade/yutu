@@ -125,6 +125,7 @@ class selfmanagement:
         await ctx.author.remove_roles(*list(roles_remove))
         await ctx.send("Ok {0.mention}, I have updated your pronoun roles.".format(ctx.author))
 
+    @commands.command()
     async def boxme(self, ctx: commands.Context):
         """
         Put yourself in timeout.
