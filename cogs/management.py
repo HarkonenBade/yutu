@@ -23,7 +23,7 @@ class Manage:
         Requests a feature from the author, do not abuse
         """
         msg = "Request from {}:\n".format(ctx.author.mention) + feature
-        await ctx.bot.get_user(ctx.bot.owner_id).send(content=msg)
+        await ctx.bot.pm_owner(content=msg)
         await ctx.message.add_reaction("✅")
 
     @commands.command()

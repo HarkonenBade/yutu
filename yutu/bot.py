@@ -1,4 +1,5 @@
 import os
+import traceback
 
 import discord
 from discord.ext import commands
@@ -27,11 +28,18 @@ class Yutu(commands.Bot):
     async def on_ready(self):
         print('We have logged in as {0.user}'.format(self))
         self.owner_id = (await self.application_info()).owner.id
+        await self.pm_owner(content="Yutu starting up")
 
-    async def on_command_error(self, ctx: commands.Context, exception):
+    async def pm_owner(self, *args, **kwargs):
+        owner = self.get_user(self.owner_id)
+        await owner.send(*args, **kwargs)
+
+    async def on_command_error(self, ctx: commands.Context, exception: Exception):
         if(isinstance(exception, commands.errors.MissingRequiredArgument) or
            isinstance(exception, commands.errors.BadArgument)):
             await ctx.print_help()
         elif isinstance(exception, commands.CommandOnCooldown):
             await ctx.send(content=str(exception))
+        elif not isinstance(exception, commands.CommandNotFound):
+            await self.pm_owner(content="".join(traceback.format_exception(None, exception, None)))
         await super().on_command_error(ctx, exception)
