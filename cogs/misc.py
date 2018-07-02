@@ -334,20 +334,20 @@ class Misc:
         async for entry in ctx.guild.audit_logs(action=discord.AuditLogAction.member_update):
             if entry.target == ctx.author and entry.before.nick != entry.after.nick:
                 if entry.before.nick is None:
-                    await ctx.send(content="{} set your nick at {} to {}.".format(
+                    await ctx.send(content="**{}** set your nick at {} to **{}**.".format(
                         entry.user,
                         entry.created_at,
                         entry.after.nick
                     ))
                 else:
                     if entry.after.nick is None:
-                        await ctx.send(content="{} cleared your nick at {} from {}.".format(
+                        await ctx.send(content="**{}** cleared your nick at {} from **{}**.".format(
                             entry.user,
                             entry.created_at,
                             entry.before.nick
                         ))
                     else:
-                        await ctx.send(content="{} changed your nick at {} from {} to {}.".format(
+                        await ctx.send(content="**{}** changed your nick at {} from **{}** to **{}**.".format(
                             entry.user,
                             entry.created_at,
                             entry.before.nick,
