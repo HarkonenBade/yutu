@@ -325,3 +325,34 @@ class Misc:
         Convert farenheit to celcius
         """
         await ctx.send(content="{:0.2f}F == {:0.2f}C".format(temp, ((temp - 32)*5)/9))
+
+    @commands.command()
+    async def nickhist(self, ctx: commands.Context):
+        """
+        Query who last changed your nick
+        """
+        async for entry in ctx.guild.audit_logs(action=discord.AuditLogAction.member_update):
+            if entry.target == ctx.author and entry.before.nick != entry.after.nick:
+                if entry.before.nick is None:
+                    await ctx.send(content="{} set your nick at {} to {}.".format(
+                        entry.user,
+                        entry.created_at,
+                        entry.after.nick
+                    ))
+                else:
+                    if entry.after.nick is None:
+                        await ctx.send(content="{} cleared your nick at {} from {}.".format(
+                            entry.user,
+                            entry.created_at,
+                            entry.before.nick
+                        ))
+                    else:
+                        await ctx.send(content="{} changed your nick at {} from {} to {}.".format(
+                            entry.user,
+                            entry.created_at,
+                            entry.before.nick,
+                            entry.after.nick
+                        ))
+                break
+        else:
+            await ctx.send(content="Sorry, it doesn't look like anyone has changed your nick recently.")
