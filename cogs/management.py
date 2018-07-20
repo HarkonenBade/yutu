@@ -1,4 +1,5 @@
 import collections
+import itertools
 
 import discord
 from discord.ext import commands
@@ -41,15 +42,26 @@ class Manage:
     @commands.command(hidden=True)
     @can_manage()
     async def chatshare(self, ctx: commands.Context):
+        def grouper(n, iterable):
+            it = iter(iterable)
+            while True:
+                chunk = tuple(itertools.islice(it, n))
+                if not chunk:
+                    return
+                yield chunk
+
         async with ctx.typing():
+            tracking = await ctx.send(content="Scanning channels...")
+
             chat_log = collections.defaultdict(lambda: 0)
-            for channel in ctx.guild.channels:
-                if isinstance(channel, discord.TextChannel):
-                    async for msg in channel.history(limit=None):
-                        chat_log[msg.author] += 1
+            for channel in ctx.guild.text_channels:
+                await tracking.edit(content="Scanning channel: {}".format(channel.name))
+                async for msg in channel.history(limit=None):
+                    chat_log[msg.author] += 1
             total_msgs = sum(chat_log.values())
-            await ctx.send("```{}```".format("\n".join(
-                ['{} - {} - {} - {:0.2f}%'.format(pos + 1, usr, msgs, (msgs/total_msgs)*100)
-                 for pos, (usr, msgs) in enumerate(sorted(chat_log.items(),
-                                                          key=lambda item: item[1],
-                                                          reverse=True))])))
+            msg_ranks = ['{} - {} - {} - {:0.2f}%'.format(pos + 1, usr, msgs, (msgs/total_msgs)*100)
+                         for pos, (usr, msgs) in enumerate(sorted(chat_log.items(), key=lambda item: item[1], reverse=True))]
+            await ctx.send(content="```Rank - Name - Total Messages - Percent Messages```")
+            for chk in grouper(10, msg_ranks):
+                await ctx.send(content="```{}```".format("\n".join(chk)))
+            await tracking.delete()
