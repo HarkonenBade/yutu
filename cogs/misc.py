@@ -307,7 +307,8 @@ class Misc:
                 work = api.work(id=wid)
             except:
                 await ctx.send("Error: Can't find a work with that ID/URL")
-                return
+                raise
+                #return
             disp = self.format_ao3(work)
             await ctx.send(embed=disp)
 
