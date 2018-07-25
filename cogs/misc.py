@@ -5,6 +5,7 @@ import hashlib
 import random
 import re
 import urllib.parse
+import traceback
 
 import discord
 from discord.ext import commands
@@ -305,10 +306,10 @@ class Misc:
             api = ao3.AO3()
             try:
                 work = api.work(id=wid)
-            except:
+            except Exception as ex:
                 await ctx.send("Error: Can't find a work with that ID/URL")
-                raise
-                #return
+                await ctx.bot.pm_owner(content="".join(traceback.format_exception(None, ex, None)))
+                return
             disp = self.format_ao3(work)
             await ctx.send(embed=disp)
 
