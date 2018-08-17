@@ -384,5 +384,5 @@ class Misc:
             if m.status == discord.Status.online:
                 mplats = platforms(m)
                 if not my_plats.isdisjoint(mplats):
-                    matches.append("{}: {}".format(m.name, ", ".join(my_plats.intersection(mplats))))
+                    matches.append("{}: {}".format(m.nickname, ", ".join(my_plats.intersection(mplats))))
         await ctx.send(content="The following users are online and share a gaming platform with you:\n{}".format("\n".join(sorted(matches))))
