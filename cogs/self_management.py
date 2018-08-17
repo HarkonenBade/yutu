@@ -133,3 +133,26 @@ class selfmanagement:
         timeout = get(ctx.guild.roles, name="timeout")
         await ctx.author.add_roles(timeout)
         await ctx.send("Ok {0.mention}, putting you in timeout.".format(ctx.author))
+
+    @commands.command()
+    async def games(self, ctx: commands.Context, *, games):
+        """
+        Use to set your gaming platforms
+
+        Enter any number of the following after the command, seperated by spaces:
+        PC, PS3, XBone, Switch
+        """
+        if not hasattr(self.games, "roles"):
+            self.games.roles = {"pc": get(ctx.guild.roles, name="PC gaymer"),
+                                "ps3": get(ctx.guild.roles, name="PS gaymer"),
+                                "xbone": get(ctx.guild.roles, name="XBone gaymer"),
+                                "switch": get(ctx.guild.roles, name="Switch gaymer")}
+
+        try:
+            roles_add = {self.games.roles[g] for g in games.lower().split(" ")}
+        except KeyError:
+            raise commands.BadArgument()
+        roles_remove = set(self.games.roles.values()) - roles_add
+        await ctx.author.add_roles(*list(roles_add))
+        await ctx.author.remove_roles(*list(roles_remove))
+        await ctx.send("Ok {0.mention}, I have updated your games roles.".format(ctx.author))
