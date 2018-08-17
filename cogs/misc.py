@@ -358,3 +358,31 @@ class Misc:
                 break
         else:
             await ctx.send(content="Sorry, it doesn't look like anyone has changed your nick recently.")
+
+    @commands.command()
+    async def hereforgames(selfself, ctx: commands.Context):
+        """
+        Find out who is online and plays games on the same platforms as you.
+        """
+        def platforms(m: discord.Member):
+            ret = set()
+            for r in m.roles:
+                if r.name == "PC gaymer":
+                    ret.add("PC")
+                elif r.name == "XBone gaymer":
+                    ret.add("XBone")
+                elif r.name == "PS gaymer":
+                    ret.add("PS")
+                elif r.name == "Switch gaymer":
+                    ret.add("Switch")
+            return ret
+
+        my_plats = platforms(ctx.author)
+        matches = []
+
+        for m in ctx.guild.members:
+            if m.status == discord.Status.online:
+                mplats = platforms(m)
+                if not my_plats.isdisjoint(mplats):
+                    matches.append("{}: {}".format(m.name, ", ".join(my_plats.intersection(mplats))))
+        await ctx.send(content="The following users are online and share a gaming platform with you:\n{}".format("\n".join(sorted(matches))))
