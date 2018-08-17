@@ -140,11 +140,11 @@ class selfmanagement:
         Use to set your gaming platforms
 
         Enter any number of the following after the command, seperated by spaces:
-        PC, PS3, XBone, Switch
+        PC, PS, XBone, Switch
         """
         if not hasattr(self.games, "roles"):
             self.games.roles = {"pc": get(ctx.guild.roles, name="PC gaymer"),
-                                "ps3": get(ctx.guild.roles, name="PS gaymer"),
+                                "ps": get(ctx.guild.roles, name="PS gaymer"),
                                 "xbone": get(ctx.guild.roles, name="XBone gaymer"),
                                 "switch": get(ctx.guild.roles, name="Switch gaymer")}
 
