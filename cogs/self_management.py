@@ -157,7 +157,7 @@ class selfmanagement:
         await ctx.author.remove_roles(*list(roles_remove))
         await ctx.send("Ok {0.mention}, I have updated your games roles.".format(ctx.author))
 
-    @commands.command(aliases=['region'])
+    @commands.command(aliases=['regions'])
     async def region(self, ctx: commands.Context, *, regions):
         """
         Use to set your world region
