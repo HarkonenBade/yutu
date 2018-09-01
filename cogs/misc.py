@@ -304,6 +304,7 @@ class Misc:
             wid = int(mtch.group(1))
         async with ctx.typing():
             api = ao3.AO3()
+            api.session.headers.update({'User-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15"})
             try:
                 work = api.work(id=wid)
             except Exception as ex:
