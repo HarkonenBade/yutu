@@ -306,10 +306,9 @@ class Misc:
             api = ao3.AO3()
             try:
                 work = api.work(id=wid)
-            except Exception as ex:
+            except Exception:
                 await ctx.send("Error: Can't find a work with that ID/URL")
-                await ctx.bot.pm_owner(content="".join(traceback.format_exception(None, ex, None)))
-                return
+                raise
             disp = self.format_ao3(work)
             await ctx.send(embed=disp)
 
