@@ -100,7 +100,7 @@ class selfmanagement:
     async def pronouns(self, ctx: commands.Context, *, pronouns):
         """
         Use to set your pronouns
-        
+
         Enter any number of the following after the command, seperated by spaces:
         he, she, they, it, they/she, they/he
         """
@@ -156,3 +156,29 @@ class selfmanagement:
         await ctx.author.add_roles(*list(roles_add))
         await ctx.author.remove_roles(*list(roles_remove))
         await ctx.send("Ok {0.mention}, I have updated your games roles.".format(ctx.author))
+
+    @commands.command(aliases=['regions'])
+    async def region(self, ctx: commands.Context, *, region):
+        """
+        Use to set your world region
+
+        Enter any one of the following after the command:
+        AmericasEast, AmericasCentral, AmericasWest, Australia, Asia, EUEast, EUWest,
+        """
+        if not hasattr(self.regions, "roles"):
+            self.regions.roles = {"AmericasEast": get(ctx.guild.roles, name="Americas East"),
+                                "AmericasCentral": get(ctx.guild.roles, name="Americas Central"),
+                                "AmericasWest": get(ctx.guild.roles, name="Americas West"),
+                                "Australia": get(ctx.guild.roles, name="Australia"),
+                                "Asia": get(ctx.guild.roles, name="Asia"),
+                                "EUEast": get(ctx.guild.roles, name="EU East"),
+                                "EUWest": get(ctx.guild.roles, name="EU West")}
+
+        try:
+            roles_add = {self.regions.roles[region]}
+        except KeyError:
+            raise commands.BadArgument()
+        roles_remove = set(self.regions.roles.values()) - roles_add
+        await ctx.author.add_roles(*list(roles_add))
+        await ctx.author.remove_roles(*list(roles_remove))
+        await ctx.send("Ok {0.mention}, I have updated your region role.".format(ctx.author))
