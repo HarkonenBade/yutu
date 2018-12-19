@@ -188,7 +188,6 @@ class Misc:
         else:
             await ctx.send("I'm sorry, I can't find that.")
             return
-        print(quote_text)
         ctx.bot.tumblr.create_quote("scarlatinashenanigans.tumblr.com",
                                     state="draft",
                                     quote=quote_text,
