@@ -156,3 +156,12 @@ class selfmanagement:
         await ctx.author.add_roles(*list(roles_add))
         await ctx.author.remove_roles(*list(roles_remove))
         await ctx.send("Ok {0.mention}, I have updated your games roles.".format(ctx.author))
+
+    @commands.command()
+    async def guildvelv(self, ctx: commands.Context):
+        """
+        Join [VELV].
+        """
+        velv = get(ctx.guild.roles, name="[VELV]")
+        await ctx.author.add_roles(velv)
+        await ctx.send("Ok {0.mention}, adding you to [VELV].".format(ctx.author))
