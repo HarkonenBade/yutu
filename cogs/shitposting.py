@@ -4,7 +4,7 @@ import discord
 from discord.utils import get
 from discord.ext import commands
 
-class ShitPosting:
+class ShitPosting(commands.Cog):
     @staticmethod
     async def clapcore(ctx, msg, clapper):
         msg = await commands.clean_content().convert(ctx, msg)

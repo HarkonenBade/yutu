@@ -15,7 +15,7 @@ def can_manage():
         return ctx.bot.is_owner(ctx.author)
     return commands.check(pred)
 
-class Manage:
+class Manage(commands.Cog):
     @commands.command(hidden=True)
     @can_manage()
     async def restart(self, ctx: commands.Context):

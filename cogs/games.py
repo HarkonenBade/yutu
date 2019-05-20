@@ -9,7 +9,7 @@ from yutu import bot
 from pony import orm
 
 
-class Games:
+class Games(commands.Cog):
     Player = None
 
     def __init__(self, bot: bot.Yutu):

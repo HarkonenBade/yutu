@@ -4,7 +4,7 @@ from discord.ext import commands
 from pony import orm
 
 
-class Facts:
+class Facts(commands.Cog):
     Fact = None
 
     def __init__(self, bot: commands.Bot):

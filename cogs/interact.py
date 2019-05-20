@@ -4,8 +4,9 @@ import discord
 from discord.ext import commands
 
 
-class Interact:
-    pass
+class Interact(commands.Cog):
+    def __init__(self):
+        super().__init__()
 
 
 def interact_fwrk(name, text, help, aliases=[], images=None, disallow_none=False):

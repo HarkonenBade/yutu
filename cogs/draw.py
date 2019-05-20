@@ -13,7 +13,7 @@ from discord.ext import commands
 HEART = "./data/heart.png"
 
 
-class Draw:
+class Draw(commands.Cog):
     @commands.command(usage="{@user|url} top text | bottom text")
     async def meme(self, ctx: commands.Context, image_source: str, *args):
         """

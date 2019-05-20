@@ -7,7 +7,7 @@ TAKE_A_MOMENT = "https://i.imgur.com/4rM92UL.gif"
 THATS_GAY = "https://i.imgur.com/w8tbJc5.gif"
 KALI = 142764404872708096
 
-class KaliCommands:
+class KaliCommands(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def kalistop(self, ctx: commands.Context):

@@ -8,8 +8,9 @@ import youtube_dl
 
 QueueEntry = collections.namedtuple("QueueEntry", ['fname', 'title', 'added_by'])
 
-class Jukebox:
+class Jukebox(commands.Cog):
     def __init__(self):
+        super().__init__()
         self.vc = None
         self.vol = 100
         self.play_queue = []

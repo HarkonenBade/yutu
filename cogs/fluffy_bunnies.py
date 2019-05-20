@@ -6,7 +6,7 @@ from discord.ext import commands
 REDEYE_BUN = "https://i.imgur.com/1GCqgcR.png"
 PENTAGRAM = "https://i.imgur.com/L6qiCyv.png"
 
-class SoulPact:
+class SoulPact(commands.Cog):
     @commands.command(hidden=True)
     @commands.has_permissions(kick_members=True)
     async def slay(self, ctx: commands.Context, user: discord.Member):

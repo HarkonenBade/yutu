@@ -15,7 +15,7 @@ import ao3
 import html2text
 
 
-class Misc:
+class Misc(commands.Cog):
     @commands.command()
     async def highfive(self, ctx: commands.Context):
         """

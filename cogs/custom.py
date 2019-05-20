@@ -16,11 +16,11 @@ def has_roles_or_owner(*roles):
     return commands.check(chk)
 
 
-class Custom:
+class Custom(commands.Cog):
     pass
 
 
-class CustomCommands:
+class CustomCommands(commands.Cog):
     Command = None
 
     def __init__(self, bot: commands.Bot):

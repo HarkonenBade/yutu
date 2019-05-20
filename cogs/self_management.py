@@ -5,7 +5,7 @@ from discord.utils import get
 from discord.ext import commands
 
 
-class selfmanagement:
+class selfmanagement(commands.Cog):
     @commands.command()
     async def imsalty(self, ctx: commands.Context):
         """
