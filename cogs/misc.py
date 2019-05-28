@@ -173,7 +173,7 @@ class Misc(commands.Cog):
                 if identifier is not None:
                     if identifier.lower() in message.clean_content.lower():
                         quote_text = message.clean_content
-                        async for msg in ctx.channel.history(limit=100, after=message, reverse=True):
+                        async for msg in ctx.channel.history(limit=100, after=message, oldest_first=True):
                             if msg.id == ctx.message.id or msg.author != user:
                                 break
                             quote_text = quote_text + '\n' + msg.clean_content
