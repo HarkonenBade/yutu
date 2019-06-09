@@ -40,7 +40,7 @@ class GW2(commands.Cog):
 
             pcomp = completion * 100 // len(upgrade_info['costs'])
 
-            out += f"{upgrade_info['name']} - {pcomp}\n"
+            out += f"{upgrade_info['name']} - {pcomp}%\n"
             out += "\n".join(elms)
             out += "\n\n"
 
