@@ -47,14 +47,14 @@ class GW2(commands.Cog):
 
                     if have >= needed:
                         completion += 1
-                        elms.append(f"~~{needed}/{needed} {cost['name']}~~")
+                        elms.append(f"- ~~{needed}/{needed} {cost['name']}~~")
                     else:
-                        elms.append(f"{have}/{needed} {cost['name']}")
+                        elms.append(f"- {have}/{needed} {cost['name']}")
 
                 pcomp = completion * 100 // len(upgrade['costs'])
 
                 txt = f"**{upgrade['name']}** - {pcomp}%\n"
-                txt += "\n".join(elms)
+                txt += "\n".join(elms) + "\n"
                 categories[cat].append(txt)
 
         out = discord.Embed(title = "Guild Upgrade Progress")
@@ -79,6 +79,6 @@ class GW2(commands.Cog):
                 title = "⚖️ Market"
             elif cat == "War Room":
                 title = "🛡 War Room"
-            out.add_field(name=title, value="\n\n".join(ups), inline=False)
+            out.add_field(name=title, value="\n".join(ups), inline=False)
 
         await ctx.send(embed=out)
