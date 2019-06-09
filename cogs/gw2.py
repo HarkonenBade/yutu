@@ -12,7 +12,7 @@ class GW2(commands.Cog):
 
     @commands.command()
     async def gw2hall(self, ctx: commands.Context):
-        out = "Guild Upgrade Progress\n"
+        out = []
         treasury = self.gw2.guildidtreasury.get(id=self.velv)
         active_upgrades = {v['upgrade_id'] for i in treasury for v in i['needed_by']}
         treasury = {v['item_id']: v for v in treasury}
@@ -40,8 +40,20 @@ class GW2(commands.Cog):
 
             pcomp = completion * 100 // len(upgrade_info['costs'])
 
-            out += f"{upgrade_info['name']} - {pcomp}%\n"
-            out += "\n".join(elms)
-            out += "\n\n"
+            txt = f"{upgrade_info['name']} - {pcomp}%\n"
+            txt += "\n".join(elms)
+            out.append(txt)
 
-        await ctx.send(embed=discord.Embed(description=out[:2048]))
+        pages = []
+        acc = ""
+        for i in out:
+            if len(acc) + len(i) > 2046:
+                pages.append(acc)
+                acc = ""
+            acc += "\n\n" + i
+
+        for i, p in enumerate(pages):
+            if i==0:
+                await ctx.send(embed=discord.Embed(title="Guild Upgrade Progress", description=p))
+            else:
+                await ctx.send(embed=discord.Embed(description=p))
