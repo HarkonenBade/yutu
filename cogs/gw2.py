@@ -70,7 +70,7 @@ class GW2(commands.Cog):
             elif cat == "Tavern":
                 title = "🍺 Tavern 🍺"
             elif cat == "Mine":
-                title = "⛏️ Mine ⛏"
+                title = "⛏ Mine ⛏"
             elif cat == "Workshop":
                 title = "🛠 Workshop 🛠"
             elif cat == "Arena":
