@@ -79,6 +79,6 @@ class GW2(commands.Cog):
                 title = "⚖️ Market"
             elif cat == "War Room":
                 title = "🛡 War Room"
-            out.add_field(title, "\n\n".join(ups))
+            out.add_field(name=title, value="\n\n".join(ups), inline=False)
 
         await ctx.send(embed=out)
