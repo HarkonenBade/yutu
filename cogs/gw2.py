@@ -26,7 +26,7 @@ class GW2(commands.Cog):
             for cost in upgrade_info['costs']:
                 needed = cost['count']
                 if cost['name'] == "Guild Favor":
-                    have = guild_info['favour']
+                    have = guild_info['favor']
                 elif cost['name'] == "Aetherium":
                     have = guild_info['aetherium']
                 else:
