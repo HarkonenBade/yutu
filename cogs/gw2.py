@@ -11,7 +11,7 @@ class GW2(commands.Cog):
         self.gw2 = gw2api.GuildWars2Client(api_key=os.environ['GW2API'])
         self.velv = os.environ['GW2GUILDID']
         with open("data/upgrades.json") as f:
-            self.upgrades = json.load(f)
+            self.upgrades = {v['id']: v for v in json.load(f)}
 
     @commands.command()
     async def gw2hall(self, ctx: commands.Context):
