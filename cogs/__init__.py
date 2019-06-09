@@ -1,7 +1,7 @@
 from . import (facts, fluffy_bunnies, interact,
                jukebox, management, draw,
                misc, shitposting, self_management,
-               kali, games, custom)
+               kali, games, custom, gw2)
 
 def setup(bot):
     bot.add_cog(facts.Facts(bot))
@@ -16,3 +16,4 @@ def setup(bot):
     bot.add_cog(shitposting.ShitPosting())
     bot.add_cog(self_management.selfmanagement())
     bot.add_cog(kali.KaliCommands())
+    bot.add_cog(gw2.GW2())

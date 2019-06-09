@@ -9,3 +9,4 @@ agithub
 pytumblr
 -e git+https://github.com/HarkonenBade/ao3.git@multi-author#egg=ao3
 html2text
+GuildWars2-API-Client
