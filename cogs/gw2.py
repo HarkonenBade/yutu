@@ -34,9 +34,9 @@ class GW2(commands.Cog):
 
                 if have >= needed:
                     completion += 1
-                    elms.append(f"    ~~{needed}/{needed} {cost['name']}~~")
+                    elms.append(f"\t~~{needed}/{needed} {cost['name']}~~")
                 else:
-                    elms.append(f"    {have}/{needed} {cost['name']}")
+                    elms.append(f"\t{have}/{needed} {cost['name']}")
 
             pcomp = completion * 100 // len(upgrade_info['costs'])
 
@@ -51,6 +51,8 @@ class GW2(commands.Cog):
                 pages.append(acc)
                 acc = ""
             acc += "\n\n" + i
+        if acc != "":
+            pages.append(acc)
 
         for i, p in enumerate(pages):
             if i==0:
