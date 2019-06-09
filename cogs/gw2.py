@@ -54,7 +54,7 @@ class GW2(commands.Cog):
                 pcomp = completion * 100 // len(upgrade['costs'])
 
                 txt = f"**{upgrade['name']}** - {pcomp}%\n"
-                txt += "\n".join(elms) + "\n"
+                txt += "\n".join(elms)
                 categories[cat].append(txt)
 
         out = discord.Embed(title = "Guild Upgrade Progress")
@@ -66,19 +66,19 @@ class GW2(commands.Cog):
 
             title = ""
             if cat == "General":
-                title = "🧰 General"
+                title = "🧰 General 🧰"
             elif cat == "Tavern":
-                title = "🍺 Tavern"
+                title = "🍺 Tavern 🍺"
             elif cat == "Mine":
-                title = "⛏️ Mine"
+                title = "⛏️ Mine ⛏"
             elif cat == "Workshop":
-                title = "🛠 Workshop"
+                title = "🛠 Workshop 🛠"
             elif cat == "Arena":
-                title = "⚔️ Arena"
+                title = "⚔️ Arena ⚔️"
             elif cat == "Market":
-                title = "⚖️ Market"
+                title = "⚖️ Market ⚖️"
             elif cat == "War Room":
-                title = "🛡 War Room"
+                title = "🛡 War Room 🛡"
             out.add_field(name=title, value="\n".join(ups), inline=False)
 
         await ctx.send(embed=out)
