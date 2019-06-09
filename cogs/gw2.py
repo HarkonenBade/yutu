@@ -47,7 +47,7 @@ class GW2(commands.Cog):
 
                     if have >= needed:
                         completion += 1
-                        elms.append(f"- ~~{needed}/{needed} {cost['name']}~~")
+                        #elms.append(f"- ~~{needed}/{needed} {cost['name']}~~")
                     else:
                         elms.append(f"- {have}/{needed} {cost['name']}")
 
