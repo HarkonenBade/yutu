@@ -44,4 +44,4 @@ class GW2(commands.Cog):
             out += "\n".join(elms)
             out += "\n\n"
 
-        await ctx.send(embed=discord.Embed(description=out))
+        await ctx.send(embed=discord.Embed(description=out[:2048]))
