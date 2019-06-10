@@ -52,7 +52,7 @@ class CustomCommands(commands.Cog):
         cmd_obj = commands.command(name=cmd.name, help=cmd.help_text)(cmd_body)
         custom = self.bot.get_cog('Custom')
         setattr(custom, cmd.name, cmd_obj)
-        custom.__cog_commands__.append(cmd_obj)
+        custom.__cog_commands__ = tuple(list(custom.__cog_commands__) + [cmd_obj])
         self.bot.add_command(cmd_obj)
 
     async def setup(self):
