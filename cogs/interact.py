@@ -35,6 +35,7 @@ def interact_fwrk(name, text, help, aliases=[], images=None, disallow_none=False
         post.set_thumbnail(url=first.avatar_url)
         await ctx.send(embed=post)
     setattr(Interact, name, cmd)
+    Interact.__cog_commands__.append(cmd)
 
 
 interact_fwrk(name='cute',
