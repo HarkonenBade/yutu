@@ -59,6 +59,8 @@ class GW2(commands.Cog):
 
         out = discord.Embed(title = "Guild Upgrade Progress")
 
+        first = True
+
         for cat in categories:
             ups = categories[cat]
             if len(ups) == 0:
@@ -79,6 +81,12 @@ class GW2(commands.Cog):
                 title = "⚖️ Market ⚖️"
             elif cat == "War Room":
                 title = "🛡 War Room 🛡"
+
+            if first:
+                first = False
+            else:
+                out.add_field(name="\u200b", value="\u200b", inline=False)
+
             out.add_field(name=title, value="\n".join(ups), inline=False)
 
         await ctx.send(embed=out)
