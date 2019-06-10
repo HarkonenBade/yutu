@@ -52,6 +52,7 @@ class CustomCommands(commands.Cog):
         custom = self.bot.get_cog('Custom')
         setattr(custom, cmd.name, cmd_obj)
         custom.__cog_commands__.append(cmd_obj)
+        self.bot.add_command(cmd_obj)
 
     async def setup(self):
         with orm.db_session:
