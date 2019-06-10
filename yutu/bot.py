@@ -38,6 +38,7 @@ class Yutu(commands.Bot):
         if(isinstance(exception, commands.errors.MissingRequiredArgument) or
            isinstance(exception, commands.errors.BadArgument)):
             await ctx.print_help()
+            await self.pm_owner(content="".join(traceback.format_exception(None, exception, None)))
         elif isinstance(exception, commands.CommandOnCooldown):
             await ctx.send(content=str(exception))
         elif isinstance(exception, commands.MissingPermissions):
