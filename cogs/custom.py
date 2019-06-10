@@ -49,8 +49,9 @@ class CustomCommands(commands.Cog):
         if cmd.nsfw:
             cmd_body = commands.is_nsfw()(cmd_body)
         cmd_obj = commands.command(name=cmd.name, help=cmd.help_text)(cmd_body)
-        cmd_obj.instance = Custom()
-        self.bot.add_command(cmd_obj)
+        custom = self.bot.get_cog('Custom')
+        setattr(custom, cmd.name, cmd_obj)
+        custom.__cog_commands__.append(cmd_obj)
 
     async def setup(self):
         with orm.db_session:
