@@ -39,12 +39,12 @@ class CustomCommands(commands.Cog):
 
     def add_cmd(self, cmd):
         if cmd.targetted:
-            async def cmd_body(_, ctx: commands.Context, target: discord.Member):
+            async def cmd_body(ctx: commands.Context, target: discord.Member):
                 await ctx.send(content=cmd.output_str.format(target=target,
                                                              author=ctx.author,
                                                              channel=ctx.channel))
         else:
-            async def cmd_body(_, ctx: commands.Context):
+            async def cmd_body(ctx: commands.Context):
                 await ctx.send(content=cmd.output_str.format(author=ctx.author,
                                                              channel=ctx.channel))
         if cmd.nsfw:
