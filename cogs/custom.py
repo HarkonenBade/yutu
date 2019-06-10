@@ -34,6 +34,7 @@ class CustomCommands(commands.Cog):
             help_text = orm.Required(str)
         self.Command = Command
         self.bot = bot
+        bot.add_cog(Custom())
         bot.add_listener(self.setup, 'on_ready')
 
     def add_cmd(self, cmd):
