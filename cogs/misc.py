@@ -360,7 +360,7 @@ class Misc(commands.Cog):
             await ctx.send(content="Sorry, it doesn't look like anyone has changed your nick recently.")
 
     @commands.command()
-    async def hereforgames(selfself, ctx: commands.Context):
+    async def hereforgames(self, ctx: commands.Context):
         """
         Find out who is online and plays games on the same platforms as you.
         """
@@ -386,3 +386,12 @@ class Misc(commands.Cog):
                 if not my_plats.isdisjoint(mplats):
                     matches.append("{}: {}".format(m.display_name, ", ".join(my_plats.intersection(mplats))))
         await ctx.send(content="The following users are online and share a gaming platform with you:\n{}".format("\n".join(sorted(matches))))
+
+    @commands.command()
+    async def blakesmash(self, ctx: commands.Context):
+        """
+        Make a blake keysmash
+        """
+        l = random.randint(20, 60)
+        smash = random.choices(population="fghnm", k=l)
+        await ctx.send(content=smash)
