@@ -394,4 +394,4 @@ class Misc(commands.Cog):
         """
         l = random.randint(20, 60)
         smash = random.choices(population="fghnm", k=l)
-        await ctx.send(content=smash)
+        await ctx.send(content="".join(smash))
