@@ -87,6 +87,6 @@ class GW2(commands.Cog):
             else:
                 out.add_field(name="\u200b", value="\u200b", inline=False)
 
-            out.add_field(name=title, value="\n".join(ups), inline=False)
+            out.add_field(name=title, value="\n\n".join(ups), inline=False)
 
         await ctx.send(embed=out)
