@@ -76,9 +76,9 @@ class GW2(commands.Cog):
             elif cat == "Workshop":
                 title = "🛠 Workshop 🛠"
             elif cat == "Arena":
-                title = "⚔️ Arena ⚔️"
+                title = "⚔ Arena ⚔"
             elif cat == "Market":
-                title = "⚖️ Market ⚖️"
+                title = "⚖ Market ⚖"
             elif cat == "War Room":
                 title = "🛡 War Room 🛡"
 
