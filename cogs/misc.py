@@ -14,6 +14,8 @@ import ao3
 
 import html2text
 
+import humanize
+
 
 class Misc(commands.Cog):
     @commands.command()
@@ -395,3 +397,16 @@ class Misc(commands.Cog):
         l = random.randint(20, 60)
         smash = random.choices(population="fghnm", k=l)
         await ctx.send(content="".join(smash))
+
+    @commands.command()
+    async def timeinhell(self, ctx: commands.Context):
+    	"""
+    	Find out how long you have been here in hell.
+    	"""
+    	if ctx.author.joined_at is None:
+    		await ctx.send(content="I'm sorry {} but I don't know how long you have been here for some reason.".format(ctx.author))
+    	else:
+    		await ctx.send(content="You joined the server {} ago {}.".format(
+    					   	humanize.naturaldelta(datetime.datetime.now() - ctx.author.joined_at),
+    					   	ctx.author
+    						))

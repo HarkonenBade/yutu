@@ -1,4 +1,6 @@
 discord.py
+wheel
+humanzie
 Pillow
 requests
 pynacl
