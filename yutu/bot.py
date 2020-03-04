@@ -18,7 +18,7 @@ class Yutu(commands.Bot):
         super().__init__(commands.when_mentioned_or("~"),
                          game=discord.Game(name="~help"),
                          description=DESCRIPTION,
-                         pm_help=None)
+                         help_command=commands.DefaultHelpCommand(dm_help=None))
         self.db = orm.Database()
         self.get_command('help').after_invoke(self.post_help)
 
