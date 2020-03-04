@@ -407,6 +407,6 @@ class Misc(commands.Cog):
     		await ctx.send(content="I'm sorry {} but I don't know how long you have been here for some reason.".format(ctx.author))
     	else:
     		await ctx.send(content="You joined the server {} ago {}.".format(
-    					   	humanize.naturaldelta(datetime.datetime.now() - ctx.author.joined_at),
+    					   	str(datetime.datetime.now() - ctx.author.joined_at),
     					   	ctx.author
     						))
