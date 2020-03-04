@@ -1,6 +1,6 @@
 discord.py
 wheel
-humanzie
+humanize
 Pillow
 requests
 pynacl
