@@ -1,6 +1,6 @@
 discord.py
 wheel
-humanize
+-e git+https://github.com/HarkonenBade/humanize.git#egg=humanize
 Pillow
 requests
 pynacl
