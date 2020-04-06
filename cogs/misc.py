@@ -312,7 +312,13 @@ class Misc(commands.Cog):
                 await ctx.send("Error: Can't find a work with that ID/URL")
                 print("".join(traceback.format_exception(None, ex, None)))
                 return
-            disp = self.format_ao3(work)
+            try:
+                disp = self.format_ao3(work)
+            except Exception as ex:
+                await ctx.send("Sorry, something went wrong parsing that fic.")
+                print("".join(traceback.format_exception(None, ex, None)))
+                print(work._html)
+                return
             await ctx.send(embed=disp)
 
     @commands.command()
