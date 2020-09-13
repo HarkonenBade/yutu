@@ -81,6 +81,7 @@ class GW2(commands.Cog):
                 title = "⚖ Market ⚖"
             elif cat == "War Room":
                 title = "🛡 War Room 🛡"
+                continue
 
             if first:
                 first = False
