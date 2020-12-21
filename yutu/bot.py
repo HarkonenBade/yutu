@@ -50,6 +50,8 @@ class Yutu(commands.Bot):
     async def on_message(self, message: discord.Message):
     	await super().on_message(message)
     	if message.author.id == 218548270002208768:
+    		print("Rhian Message")
     		if re.match(r'\Ssex\S', message.content) is not None:
+    			print("Rhian smash")
     			await message.reply(content="https://tenor.com/view/city-hunter-ryo-saeba-kaori-makimura-go-to-horny-jail-bonk-gif-18541691")
 
