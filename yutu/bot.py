@@ -1,4 +1,5 @@
 import os
+import re
 import traceback
 
 import discord
@@ -45,3 +46,10 @@ class Yutu(commands.Bot):
         elif not isinstance(exception, commands.CommandNotFound):
             await self.pm_owner(content="".join(traceback.format_exception(None, exception, None)))
         await super().on_command_error(ctx, exception)
+
+    async def on_message(self, message: discord.Message):
+    	await super().on_message(message)
+    	if message.author.id == 218548270002208768:
+    		if re.match(r'\Ssex\S', message.content) is not None:
+    			await message.reply(content="https://tenor.com/view/city-hunter-ryo-saeba-kaori-makimura-go-to-horny-jail-bonk-gif-18541691")
+
