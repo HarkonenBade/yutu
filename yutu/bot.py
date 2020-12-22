@@ -54,5 +54,5 @@ class Yutu(commands.Bot):
     		print(message.content)
     		if re.search(r'\Ssex\S', message.content) is not None:
     			print("Rhian smash")
-    			await message.reply(content="https://tenor.com/view/city-hunter-ryo-saeba-kaori-makimura-go-to-horny-jail-bonk-gif-18541691")
+    			await message.channel.send(content="https://tenor.com/view/city-hunter-ryo-saeba-kaori-makimura-go-to-horny-jail-bonk-gif-18541691")
 
