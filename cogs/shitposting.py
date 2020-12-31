@@ -119,5 +119,5 @@ class ShitPosting(commands.Cog):
         Find your spirit miku (supply a follower number, or it will use your discord username #number)
         """
         mikunum = ((number if number is not None else int(ctx.author.discriminator)) % 348) + 1
-        await ctx.send(embed=discord.Embed(url="http://miku.sega.jp/mega39s/img/module/module_{}.png".format(mikunum),
-                                           content="{}'s Spirit Miku".format(ctx.author)))
+        print(mikunum)
+        await ctx.send(content="{}'s Spirit Miku\nhttp://miku.sega.jp/mega39s/img/module/module_{}.png".format(ctx.author, mikunum))
