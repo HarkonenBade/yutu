@@ -112,3 +112,12 @@ class ShitPosting(commands.Cog):
                                               ord('N'): 'NB',
                                               ord('b'): 'nb',
                                               ord('B'): 'NB'}))
+
+    @commands.command()
+    async def spiritmiku(self, ctx:commands.Context, number: int = None):
+        """
+        Find your spirit miku (supply a follower number, or it will use your discord username #number)
+        """
+        mikunum = ((number if number is not None else int(ctx.author.discriminator)) % 348) + 1
+        await ctx.send(embed=discord.Embed(url="http://miku.sega.jp/mega39s/img/module/module_{}.png".format(mikunum),
+                                           content="{}'s Spirit Miku".format(ctx.author)))
