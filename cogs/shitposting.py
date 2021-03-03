@@ -119,5 +119,7 @@ class ShitPosting(commands.Cog):
         Find your miku kin (supply a follower number, or it will use your discord username #number)
         """
         mikunum = ((number if number is not None else int(ctx.author.discriminator)) % 348) + 1
-        print(mikunum)
-        await ctx.send(content="{}'s Miku Miku Mii\nhttp://miku.sega.jp/mega39s/img/module/module_{}.png".format(ctx.author, mikunum))
+        embed = discord.Embed()
+        embed.title = "{}'s Miku Miku Mii".format(ctx.author)
+        embed.set_image(url="http://miku.sega.jp/mega39s/img/module/module_{}.png".format(mikunum))
+        await ctx.send(embed=embed)
