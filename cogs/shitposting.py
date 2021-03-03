@@ -114,10 +114,10 @@ class ShitPosting(commands.Cog):
                                               ord('B'): 'NB'}))
 
     @commands.command()
-    async def spiritmiku(self, ctx:commands.Context, number: int = None):
+    async def mikumikumii(self, ctx:commands.Context, number: int = None):
         """
-        Find your spirit miku (supply a follower number, or it will use your discord username #number)
+        Find your miku kin (supply a follower number, or it will use your discord username #number)
         """
         mikunum = ((number if number is not None else int(ctx.author.discriminator)) % 348) + 1
         print(mikunum)
-        await ctx.send(content="{}'s Spirit Miku\nhttp://miku.sega.jp/mega39s/img/module/module_{}.png".format(ctx.author, mikunum))
+        await ctx.send(content="{}'s Miku Miku Mii\nhttp://miku.sega.jp/mega39s/img/module/module_{}.png".format(ctx.author, mikunum))
