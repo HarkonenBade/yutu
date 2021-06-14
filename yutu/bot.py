@@ -51,6 +51,6 @@ class Yutu(commands.Bot):
         await super().on_message(message)
         if message.author.id == 218548270002208768:
             if re.search(r'\Ssex\S', message.content.lower()) is not None:
-            	if "sexual" not in message.contant.lower():
+            	if "sexual" not in message.content.lower():
                 	await message.channel.send(content="https://tenor.com/view/city-hunter-ryo-saeba-kaori-makimura-go-to-horny-jail-bonk-gif-18541691")
 
