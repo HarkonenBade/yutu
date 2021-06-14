@@ -48,11 +48,9 @@ class Yutu(commands.Bot):
         await super().on_command_error(ctx, exception)
 
     async def on_message(self, message: discord.Message):
-    	await super().on_message(message)
-    	if message.author.id == 218548270002208768:
-    		print("Rhian Message")
-    		print(message.content)
-    		if re.search(r'\Ssex\S', message.content) is not None:
-    			print("Rhian smash")
-    			await message.channel.send(content="https://tenor.com/view/city-hunter-ryo-saeba-kaori-makimura-go-to-horny-jail-bonk-gif-18541691")
+        await super().on_message(message)
+        if message.author.id == 218548270002208768:
+            if re.search(r'\Ssex\S', message.content.lower()) is not None:
+            	if "sexual" not in message.contant.lower():
+                	await message.channel.send(content="https://tenor.com/view/city-hunter-ryo-saeba-kaori-makimura-go-to-horny-jail-bonk-gif-18541691")
 
