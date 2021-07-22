@@ -14,10 +14,9 @@ class KaliCommands(commands.Cog):
         """
         Kali is being too intense
         """
-        kali = ctx.bot.get_user(KALI)
         post = discord.Embed()
         post.set_image(url=TAKE_A_MOMENT)
-        await ctx.send(content="{0.mention} Stop, take a moment and be mindful.".format(kali),
+        await ctx.send(content="<@!{0}> Stop, take a moment and be mindful.".format(KALI),
                        embed=post)
 
     @commands.command()
@@ -26,7 +25,6 @@ class KaliCommands(commands.Cog):
         """
         Kali no, not the coffee
         """
-        kali = ctx.bot.get_user(KALI)
         await ctx.message.add_reaction('✅')
         await kali.send(random.choice(["No Kali, don't drink the coffee",
                                        "Not with the bean juice Kali",
@@ -38,8 +36,7 @@ class KaliCommands(commands.Cog):
         """
         Kali that's gay
         """
-        kali = ctx.bot.get_user(KALI)
         post = discord.Embed()
         post.set_image(url=THATS_GAY)
-        await ctx.send(content="{0.mention} that's gay.".format(kali),
+        await ctx.send(content="<@!{0}> that's gay.".format(KALI),
                        embed=post)

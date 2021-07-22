@@ -198,13 +198,13 @@ class Misc(commands.Cog):
 
     @commands.command(hidden=True)
     async def gayformurph(self, ctx: commands.Context):
-        murph = await ctx.bot.fetch_user(184073774822326273)
-        await ctx.send("{0.mention} is so very gay for {1.mention}.".format(ctx.author, murph))
+        murph_id = 184073774822326273
+        await ctx.send("{0.mention} is so very gay for <@!{1}>.".format(ctx.author, murph_id))
 
     @commands.command(hidden=True)
     async def verygayformurph(self, ctx: commands.Context):
-        murph = await ctx.bot.fetch_user(184073774822326273)
-        await ctx.send("Even if stranded on Themyscira, {0.mention} would swim the ocean to find {1.mention}.".format(ctx.author, murph))
+        murph_id = 184073774822326273
+        await ctx.send("Even if stranded on Themyscira, {0.mention} would swim the ocean to find <@!{1}>.".format(ctx.author, murph_id))
 
     def format_ao3(self, work):
         def make_link(elm):
