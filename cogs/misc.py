@@ -198,12 +198,12 @@ class Misc(commands.Cog):
 
     @commands.command(hidden=True)
     async def gayformurph(self, ctx: commands.Context):
-        murph = ctx.bot.get_user(184073774822326273)
+        murph = await ctx.bot.fetch_user(184073774822326273)
         await ctx.send("{0.mention} is so very gay for {1.mention}.".format(ctx.author, murph))
 
     @commands.command(hidden=True)
     async def verygayformurph(self, ctx: commands.Context):
-        murph = ctx.bot.get_user(184073774822326273)
+        murph = await ctx.bot.fetch_user(184073774822326273)
         await ctx.send("Even if stranded on Themyscira, {0.mention} would swim the ocean to find {1.mention}.".format(ctx.author, murph))
 
     def format_ao3(self, work):
