@@ -32,7 +32,7 @@ class Yutu(commands.Bot):
         await self.pm_owner(content="Yutu starting up")
 
     async def pm_owner(self, *args, **kwargs):
-        owner = self.get_user(self.owner_id)
+        owner = await self.fetch_user(self.owner_id)
         await owner.send(*args, **kwargs)
 
     async def on_command_error(self, ctx: commands.Context, exception: Exception):
