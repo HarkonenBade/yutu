@@ -16,10 +16,13 @@ You can ask my programmer @Harkonen if you want to know more about me.
 
 class Yutu(commands.Bot):
     def __init__(self):
+        intents = discord.Intents.default()
+        intents.members = True
         super().__init__(commands.when_mentioned_or("~"),
                          game=discord.Game(name="~help"),
                          description=DESCRIPTION,
-                         help_command=commands.DefaultHelpCommand(dm_help=None))
+                         help_command=commands.DefaultHelpCommand(dm_help=None),
+                         intents=intents)
         self.db = orm.Database()
         self.get_command('help').after_invoke(self.post_help)
 
@@ -36,10 +39,10 @@ class Yutu(commands.Bot):
         await owner.send(*args, **kwargs)
 
     async def on_command_error(self, ctx: commands.Context, exception: Exception):
-        if(isinstance(exception, commands.errors.MissingRequiredArgument) or
-           isinstance(exception, commands.errors.BadArgument)):
-            await ctx.print_help()
-        elif isinstance(exception, commands.CommandOnCooldown):
+        #if(isinstance(exception, commands.errors.MissingRequiredArgument) or
+        #   isinstance(exception, commands.errors.BadArgument)):
+        #    await ctx.print_help()
+        if isinstance(exception, commands.CommandOnCooldown):
             await ctx.send(content=str(exception))
         elif isinstance(exception, commands.MissingPermissions):
             await ctx.send(content="I'm sorry {}, I can't let you do that.".format(ctx.author.mention))

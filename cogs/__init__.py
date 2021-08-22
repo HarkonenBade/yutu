@@ -1,12 +1,13 @@
 from . import (facts, fluffy_bunnies, interact,
                jukebox, management, draw,
                misc, shitposting, self_management,
-               kali, games, custom, gw2)
+               kali, games, custom, gw2, auto_cone)
 
 def setup(bot):
     bot.add_cog(facts.Facts(bot))
     bot.add_cog(games.Games(bot))
     bot.add_cog(custom.CustomCommands(bot))
+    bot.add_cog(auto_cone.AutoCone(bot))
     bot.add_cog(management.Manage())
     bot.add_cog(jukebox.Jukebox())
     bot.add_cog(interact.Interact())
