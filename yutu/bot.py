@@ -44,7 +44,7 @@ class Yutu(commands.Bot):
         #    await ctx.print_help()
         if isinstance(exception, commands.CommandOnCooldown):
             await ctx.send(content=str(exception))
-        elif isinstance(exception, commands.MissingPermissions):
+        elif isinstance(exception, commands.MissingPermissions) or isinstance(exception, commands.MissingRole):
             await ctx.send(content="I'm sorry {}, I can't let you do that.".format(ctx.author.mention))
         elif not isinstance(exception, commands.CommandNotFound):
             await self.pm_owner(content="".join(traceback.format_exception(None, exception, None)))

@@ -39,13 +39,13 @@ class AutoCone(commands.Cog):
         async def update(bot: commands.Bot, cone: AutoCone):
             while True:
                 with orm.db_session:
-                    for val in cone.RoleRecord.select(lambda v: v.release > datetime.now()):
+                    for val in cone.RoleRecord.select(lambda v: datetime.now() > v.release):
                         guild: discord.Guild = await bot.fetch_guild(val.guild_id)
                         user: discord.Member = await guild.fetch_member(val.user_id)
                         role: discord.Role = guild.get_role(val.role_id)
                         await user.remove_roles(role)
                         try:
-                            await user.send(content="You have had your f{role.name} role removed.")
+                            await user.send(content=f"You have had your {role.name} role removed.")
                         finally:
                             val.delete()
                 await asyncio.sleep(30)
