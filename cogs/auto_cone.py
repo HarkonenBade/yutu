@@ -54,7 +54,8 @@ class AutoCone(commands.Cog):
 
     async def meta_cone(self, ctx: commands.Context, target: discord.Member, duration: str, cone: int):
         try:
-            duration = dateparser.parse(duration, settings={'PREFER_DATES_FROM': 'future'})
+            duration = dateparser.parse(duration, settings={'PREFER_DATES_FROM': 'future',
+                                                            'PREFER_DAY_OF_MONTH': 'first'})
         except ValueError:
             await ctx.send(content="I'm sorry, I couldn't understand that duration, please try again.")
             return
@@ -86,6 +87,21 @@ class AutoCone(commands.Cog):
     @commands.command()
     async def cone(self, ctx: commands.Context, target: discord.Member, *duration):
         await self.meta_cone(ctx, target, " ".join(duration), CONE_OF_SHAME)
+
+    @commands.has_role(MODS)
+    @commands.command()
+    async def uglier_cone(self, ctx: commands.Context, target: discord.Member, *duration):
+        await self.meta_cone(ctx, target, " ".join(duration), UGLIER_CONE)
+
+    @commands.has_role(MODS)
+    @commands.command()
+    async def birthday_cone(self, ctx: commands.Context, target: discord.Member, *duration):
+        await self.meta_cone(ctx, target, " ".join(duration), BIRTHDAY_CONE)
+
+    @commands.has_role(MODS)
+    @commands.command()
+    async def nv_cone(self, ctx: commands.Context, target: discord.Member, *duration):
+        await self.meta_cone(ctx, target, " ".join(duration), NEW_VEGAS_CONE)
 
     @commands.has_role(MODS)
     @commands.command()
