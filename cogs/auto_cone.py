@@ -7,6 +7,7 @@ from discord.ext import commands
 from pony import orm
 
 import dateparser
+import humanize
 
 MODS = 360515214199750658
 CONE_OF_SHAME=396363935265062912
@@ -80,7 +81,7 @@ class AutoCone(commands.Cog):
         with orm.db_session:
             test = self.RoleRecord.get(user_id=target.id, role_id=cone)
             if test is not None:
-                await ctx.send(content="They already have that cone until " + str(test.release))
+                await ctx.send(content="They already have that cone until " + humanize.naturaldate(test.release))
                 return
             else:
                 role = ctx.guild.get_role(cone)
@@ -89,7 +90,7 @@ class AutoCone(commands.Cog):
                                 role_id=cone,
                                 coner=ctx.author.id,
                                 release=duration)
-                await ctx.send(content="Ok, coning them until " + str(duration))
+                await ctx.send(content="Ok, coning them until " + humanize.naturaldate(duration))
                 await target.add_roles(role)
 
     @commands.has_role(MODS)
@@ -122,11 +123,17 @@ class AutoCone(commands.Cog):
         with orm.db_session:
             embed = discord.Embed()
             embed.title = f"{ctx.author.name} Cone List"
+            embed.description = ""
             for val in self.RoleRecord.select(user_id=ctx.author.id):
                 guild: discord.Guild = ctx.bot.get_guild(val.guild_id)
                 if guild is None:
                     guild = await ctx.bot.fetch_guild(val.guild_id)
                 role: discord.Role = guild.get_role(val.role_id)
-                embed.description += f"Coned with **{role.name}** until {val.release}\n"
+                coner: discord.Member = guild.get_member(val.coner)
+                if coner is None:
+                    coner = await guild.fetch_member(val.coner)
+                left = val.release - datetime.now()
+                left = humanize.naturaldelta(left)
+                embed.description += f"Coned with **{role.name}** by *{coner.name} for {left}\n"
             await ctx.send(embed=embed)
 
