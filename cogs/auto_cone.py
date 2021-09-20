@@ -37,6 +37,7 @@ class AutoCone(commands.Cog):
         self.RoleRecord = RoleRecord
 
         async def update(bot: commands.Bot, cone: AutoCone):
+            await bot.wait_until_ready()
             while True:
                 with orm.db_session:
                     for val in cone.RoleRecord.select():
