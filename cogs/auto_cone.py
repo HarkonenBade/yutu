@@ -127,4 +127,5 @@ class AutoCone(commands.Cog):
                     guild = await ctx.bot.fetch_guild(val.guild_id)
                 role: discord.Role = guild.get_role(val.role_id)
                 embed.description += f"Coned with **{role.name}** until {val.release}\n"
+            await ctx.send(embed=embed)
 
