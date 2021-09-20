@@ -81,7 +81,8 @@ class AutoCone(commands.Cog):
         with orm.db_session:
             test = self.RoleRecord.get(user_id=target.id, role_id=cone)
             if test is not None:
-                await ctx.send(content="They already have that cone until " + humanize.naturaldate(test.release))
+                left = humanize.naturaldelta(test.release - datetime.now())
+                await ctx.send(content=f"They already have that cone for {left}.")
                 return
             else:
                 role = ctx.guild.get_role(cone)
@@ -90,7 +91,8 @@ class AutoCone(commands.Cog):
                                 role_id=cone,
                                 coner=ctx.author.id,
                                 release=duration)
-                await ctx.send(content="Ok, coning them until " + humanize.naturaldate(duration))
+                left = humanize.naturaldelta(duration - datetime.now())
+                await ctx.send(content=f"Ok, coning them for {left}.")
                 await target.add_roles(role)
 
     @commands.has_role(MODS)
@@ -134,6 +136,6 @@ class AutoCone(commands.Cog):
                     coner = await guild.fetch_member(val.coner)
                 left = val.release - datetime.now()
                 left = humanize.naturaldelta(left)
-                embed.description += f"Coned with **{role.name}** by *{coner.name} for {left}\n"
+                embed.description += f"Coned with **{role.name}** by *{coner.name}* for {left}.\n"
             await ctx.send(embed=embed)
 
