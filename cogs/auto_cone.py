@@ -39,15 +39,23 @@ class AutoCone(commands.Cog):
         async def update(bot: commands.Bot, cone: AutoCone):
             while True:
                 with orm.db_session:
-                    for val in cone.RoleRecord.select(lambda v: datetime.now() > v.release):
-                        guild: discord.Guild = await bot.fetch_guild(val.guild_id)
-                        user: discord.Member = await guild.fetch_member(val.user_id)
+                    for val in cone.RoleRecord.select():
+                        guild: discord.Guild = bot.get_guild(val.guild_id)
+                        if guild is None:
+                            guild = await bot.fetch_guild(val.guild_id)
                         role: discord.Role = guild.get_role(val.role_id)
-                        await user.remove_roles(role)
-                        try:
-                            await user.send(content=f"You have had your {role.name} role removed.")
-                        finally:
+                        user: discord.Member = guild.get_member(val.user_id)
+                        if user is None:
+                            user = await guild.fetch_member(val.user_id)
+
+                        if role not in user.roles:
                             val.delete()
+                        elif datetime.now() > val.release:
+                            await user.remove_roles(role)
+                            try:
+                                await user.send(content=f"You have had your {role.name} role removed.")
+                            finally:
+                                val.delete()
                 await asyncio.sleep(30)
 
         bot.loop.create_task(update(bot, self))
@@ -108,9 +116,15 @@ class AutoCone(commands.Cog):
     async def timeout(self, ctx: commands.Context, target: discord.Member, *duration):
         await self.meta_cone(ctx, target, " ".join(duration), TIMEOUT)
 
-    @commands.command(hidden=True)
+    @commands.command()
     async def show_cones(self, ctx: commands.Context):
         with orm.db_session:
+            embed = discord.Embed()
+            embed.title = f"{ctx.author.name} Cone List"
             for val in self.RoleRecord.select(user_id=ctx.author.id):
-                print(val.role_id)
+                guild: discord.Guild = ctx.bot.get_guild(val.guild_id)
+                if guild is None:
+                    guild = await ctx.bot.fetch_guild(val.guild_id)
+                role: discord.Role = guild.get_role(val.role_id)
+                embed.description += f"Coned with **{role.name}** until {val.release}\n"
 
